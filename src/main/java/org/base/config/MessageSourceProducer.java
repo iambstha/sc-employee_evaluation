@@ -43,4 +43,20 @@ public class MessageSourceProducer {
         return messageSource;
     }
 
+    @Produces
+    @Named("evaluationMessageSource")
+    public MessageSource evaluationMessageSource() {
+        MessageSource messageSource = new MessageSource();
+        messageSource.loadControllerMessages("evaluation", "en");
+        return messageSource;
+    }
+
+    @Produces
+    @Named("competencyEvaluationMessageSource")
+    public MessageSource competencyEvaluationMessageSource() {
+        MessageSource messageSource = new MessageSource();
+        messageSource.loadControllerMessages("competencyEvaluation", "en");
+        return messageSource;
+    }
+
 }

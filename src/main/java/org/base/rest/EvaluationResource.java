@@ -9,27 +9,27 @@ import lombok.extern.slf4j.Slf4j;
 import org.base.aop.Loggable;
 import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
-import org.base.dto.CompetencyReqDto;
-import org.base.service.competency.CompetencyService;
+import org.base.dto.EvaluationReqDto;
+import org.base.service.evaluation.EvaluationService;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 @Slf4j
-@Path("/competency")
-public class CompetencyResource {
+@Path("/evaluation")
+public class EvaluationResource {
 
     @Inject
-    CompetencyService service;
+    EvaluationService service;
 
     @Inject
-    @Named("competencyMessageSource")
+    @Named("evaluationMessageSource")
     MessageSource messageSource;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Loggable
-    public Response save(@RequestBody CompetencyReqDto competencyReqDto) {
+    public Response save(@RequestBody EvaluationReqDto evaluationReqDto) {
         ApiResponse apiResponse = ApiResponse.builder()
-                .data(service.save(competencyReqDto))
+                .data(service.save(evaluationReqDto))
                 .statusCode(Response.Status.CREATED.getStatusCode())
                 .status(Response.Status.CREATED.getReasonPhrase())
                 .message(messageSource.getMessage("creation.success"))
@@ -68,9 +68,9 @@ public class CompetencyResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Loggable
-    public Response updateById(@PathParam("id") Long id, @RequestBody CompetencyReqDto competencyReqDto) {
+    public Response updateById(@PathParam("id") Long id, @RequestBody EvaluationReqDto evaluationReqDto) {
         ApiResponse apiResponse = ApiResponse.builder()
-                .data(service.updateById(id, competencyReqDto))
+                .data(service.updateById(id, evaluationReqDto))
                 .message(messageSource.getMessage("update.success"))
                 .build();
 
@@ -89,5 +89,6 @@ public class CompetencyResource {
 
         return Response.ok(apiResponse).build();
     }
+
 
 }

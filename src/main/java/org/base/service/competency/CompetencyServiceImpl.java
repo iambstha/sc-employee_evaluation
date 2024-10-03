@@ -6,19 +6,15 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
 import org.base.dto.CompetencyReqDto;
 import org.base.dto.CompetencyResDto;
-import org.base.dto.GuidelineReqDto;
 import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.CompetencyMapper;
 import org.base.model.Competency;
 import org.base.model.Guideline;
 import org.base.repository.CompetencyRepository;
-import org.base.util.TimeUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Transactional
