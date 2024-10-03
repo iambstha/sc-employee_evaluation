@@ -1,5 +1,6 @@
 package org.base.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,7 @@ public class Guideline extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "competency_id", nullable = false)
+    @JsonIgnore
     private Competency competency;
 
     @Column(name = "indicator_description")

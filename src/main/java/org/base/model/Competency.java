@@ -20,7 +20,8 @@ public class Competency extends BaseEntity {
     private Long competencyId;
 
     @Enumerated(EnumType.STRING)
-    private CompetencyType type;
+    @Column(name = "competency_type")
+    private CompetencyType competencyType;
 
     @Column(name = "name")
     private String name;
@@ -28,7 +29,7 @@ public class Competency extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "competency", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "competency", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Guideline> guidelines;
 
 }

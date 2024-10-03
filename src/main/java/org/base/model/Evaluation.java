@@ -25,8 +25,11 @@ public class Evaluation extends BaseEntity {
     @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL)
     private List<CompetencyEvaluation> competencyEvaluations;
 
-    @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL)
-    private List<FunctionalCompetency> functionalCompetencies;
+    @Column(name = "period_from", nullable = false)
+    private LocalDateTime periodFrom;
+
+    @Column(name = "period_to", nullable = false)
+    private LocalDateTime periodTo;
 
     @Column(name = "evaluation_date", nullable = false)
     private LocalDateTime evaluationDate;
