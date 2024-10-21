@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
+import lombok.extern.slf4j.Slf4j;
 import org.base.dto.EvaluationReqDto;
 import org.base.dto.EvaluationResDto;
 import org.base.exception.ResourceAlreadyExistsException;
@@ -12,12 +13,17 @@ import org.base.mapper.EvaluationMapper;
 import org.base.model.Competency;
 import org.base.model.CompetencyEvaluation;
 import org.base.model.Evaluation;
+import org.base.model.Score;
+import org.base.repository.CompetencyEvaluationRepository;
 import org.base.repository.CompetencyRepository;
 import org.base.repository.EvaluationRepository;
+import org.base.repository.ScoreRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @ApplicationScoped
 @Transactional
 public class EvaluationServiceImpl implements EvaluationService {
@@ -27,6 +33,12 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Inject
     CompetencyRepository competencyRepository;
+
+    @Inject
+    ScoreRepository scoreRepository;
+
+    @Inject
+    CompetencyEvaluationRepository competencyEvaluationRepository;
 
     @Inject
     EvaluationMapper evaluationMapper;
@@ -52,6 +64,19 @@ public class EvaluationServiceImpl implements EvaluationService {
                     Competency existingCompetency = competencyRepository.findById(competency.getCompetencyId());
                     if (existingCompetency != null) {
                         competencyEvaluation.setCompetency(existingCompetency);
+                    }
+                }
+                if (competencyEvaluation.getScore() != null) {
+                    Score score = competencyEvaluation.getScore();
+                    if (score.getScoreId() != null) {
+                        Score existingScore = scoreRepository.findById(score.getScoreId());
+                        if (existingScore != null) {
+                            competencyEvaluation.setScore(existingScore);
+                        } else {
+                            scoreRepository.persist(score);
+                        }
+                    } else {
+                        scoreRepository.persist(score);
                     }
                 }
             }
@@ -90,8 +115,68 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     public EvaluationResDto updateById(Long id, EvaluationReqDto evaluationReqDto) {
-        return null;
+        try {
+            Evaluation existingEvaluation = evaluationRepository.findByIdOptional(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Evaluation with id " + id + " not found."));
+
+            Evaluation updatedEvaluation = evaluationMapper.updateEntityFromDto(evaluationReqDto, existingEvaluation);
+
+            updatedEvaluation.setEvaluationId(existingEvaluation.getEvaluationId());
+
+            existingEvaluation.getCompetencyEvaluations().forEach(competencyEvaluation -> {
+                competencyEvaluation.setEvaluation(null);
+                competencyEvaluationRepository.delete(competencyEvaluation);
+            });
+
+            List<CompetencyEvaluation> competencyEvaluations = evaluationMapper.mapCompetencyEvaluationFromReqDtos(
+                    evaluationReqDto.getCompetencyEvaluations(), updatedEvaluation
+            );
+
+            for (CompetencyEvaluation competencyEvaluation : competencyEvaluations) {
+                Competency competency = competencyEvaluation.getCompetency();
+                if (competency.getCompetencyId() != null) {
+                    Competency existingCompetency = competencyRepository.findById(competency.getCompetencyId());
+                    if (existingCompetency != null) {
+                        competencyEvaluation.setCompetency(existingCompetency);
+                    }
+                }
+
+                if (competencyEvaluation.getScore() != null) {
+                    Score score = competencyEvaluation.getScore();
+                    if (score.getScoreId() != null) {
+                        Score existingScore = scoreRepository.findById(score.getScoreId());
+                        if (existingScore != null) {
+                            existingScore.setValue(score.getValue());
+                            existingScore.setDescription(score.getDescription());
+                            competencyEvaluation.setScore(existingScore);
+                        } else {
+                            throw new ResourceNotFoundException("Score with id " + score.getScoreId() + " not found.");
+                        }
+                    } else {
+                        scoreRepository.persist(score);
+                        competencyEvaluation.setScore(score);
+                    }
+                }
+
+            }
+
+            updatedEvaluation.setCompetencyEvaluations(competencyEvaluations);
+
+            updatedEvaluation.setCreatedBy(existingEvaluation.getCreatedBy());
+            updatedEvaluation.setUpdatedBy(null);
+            updatedEvaluation.setUpdatedDate(LocalDateTime.now());
+
+            evaluationRepository.getEntityManager().merge(updatedEvaluation);
+
+            return evaluationMapper.toResDto(updatedEvaluation);
+
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException(e.getMessage());
+        } catch (Exception e) {
+            throw new BadRequestException("Failed to update evaluation: " + e.getMessage());
+        }
     }
+
 
     @Override
     public void deleteById(Long id) {
