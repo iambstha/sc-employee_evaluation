@@ -23,6 +23,9 @@ public class Competency extends BaseEntity {
     @Column(name = "competency_type")
     private CompetencyType competencyType;
 
+    @Column(name = "sub_competency_type")
+    private String subCompetencyType;
+
     @Column(name = "name")
     private String name;
 

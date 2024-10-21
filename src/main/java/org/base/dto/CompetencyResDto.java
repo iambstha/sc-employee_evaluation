@@ -10,8 +10,9 @@ public class CompetencyResDto {
 
     private Long competencyId;
     private CompetencyType competencyType;
+    private String subCompetencyType;
     private String name;
     private String description;
-//    private List<Long> guidelineIds;
-private List<GuidelineResDto> guidelineResDtos;
+    private List<GuidelineResDto> guidelineResDtos;
+
 }

@@ -1,7 +1,7 @@
 package org.base.dto;
 
 import lombok.Data;
-import org.base.model.CompetencyEvaluation;
+import org.base.model.enums.EvaluationByType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,7 +11,8 @@ public class EvaluationResDto {
 
     private Long evaluationId;
     private Long employeeId;
-    private List<Long> competencyEvaluationIds;
+    private List<CompetencyEvaluationResDto> competencyEvaluations;
+    private EvaluationByType evaluationByType;
     private LocalDateTime periodFrom;
     private LocalDateTime periodTo;
     private LocalDateTime evaluationDate;

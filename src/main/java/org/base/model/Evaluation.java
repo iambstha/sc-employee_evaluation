@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.base.domain.BaseEntity;
+import org.base.model.enums.EvaluationByType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,10 @@ public class Evaluation extends BaseEntity {
 
     @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL)
     private List<CompetencyEvaluation> competencyEvaluations;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "evaluation_by_type")
+    private EvaluationByType evaluationByType;
 
     @Column(name = "period_from", nullable = false)
     private LocalDateTime periodFrom;

@@ -28,14 +28,6 @@ public class MessageSourceProducer {
     }
 
     @Produces
-    @Named("configurationMessageSource")
-    public MessageSource configurationMessageSource() {
-        MessageSource messageSource = new MessageSource();
-        messageSource.loadControllerMessages("configuration", "en");
-        return messageSource;
-    }
-
-    @Produces
     @Named("competencyMessageSource")
     public MessageSource competencyMessageSource() {
         MessageSource messageSource = new MessageSource();

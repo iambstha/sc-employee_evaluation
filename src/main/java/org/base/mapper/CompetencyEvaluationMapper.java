@@ -17,24 +17,24 @@ import java.util.stream.Collectors;
 @Mapper(config = QuarkusMappingConfig.class)
 public interface CompetencyEvaluationMapper {
 
-    @Mapping(target = "scoreId", source = "score", qualifiedByName = "mapScore")
+//    @Mapping(target = "scoreId", source = "score", qualifiedByName = "mapScore")
     @Mapping(target = "evaluationId", source = "evaluation", qualifiedByName = "mapEvaluation")
     @Mapping(target = "competencyId", source = "competency", qualifiedByName = "mapCompetency")
     CompetencyEvaluationReqDto toReqDto(CompetencyEvaluation competencyEvaluation);
 
-    @Mapping(target = "scoreId", source = "score", qualifiedByName = "mapScore")
+//    @Mapping(target = "scoreId", source = "score", qualifiedByName = "mapScore")
     @Mapping(target = "evaluationId", source = "evaluation", qualifiedByName = "mapEvaluation")
     @Mapping(target = "competencyId", source = "competency", qualifiedByName = "mapCompetency")
     CompetencyEvaluationResDto toResDto(CompetencyEvaluation competencyEvaluation);
 
     @Mapping(target = "competencyEvaluationId", ignore = true)
-    @Mapping(target = "score.scoreId", source = "scoreId")
+//    @Mapping(target = "score.scoreId", source = "scoreId")
     @Mapping(target = "evaluation.evaluationId", source = "evaluationId")
     @Mapping(target = "competency.competencyId", source = "competencyId")
     CompetencyEvaluation toEntity(CompetencyEvaluationReqDto competencyEvaluationReqDto);
 
     @Mapping(target = "competencyEvaluationId", ignore = true)
-    @Mapping(target = "score.scoreId", source = "scoreId")
+//    @Mapping(target = "score.scoreId", source = "scoreId")
     @Mapping(target = "evaluation.evaluationId", source = "evaluationId")
     @Mapping(target = "competency.competencyId", source = "competencyId")
     void updateEntityFromDto(CompetencyEvaluationReqDto competencyEvaluationReqDto, @MappingTarget CompetencyEvaluation existingCompetencyEvaluation);

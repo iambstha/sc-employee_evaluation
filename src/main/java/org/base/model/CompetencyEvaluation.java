@@ -20,11 +20,11 @@ public class CompetencyEvaluation extends BaseEntity {
     @JoinColumn(name = "evaluation_id", nullable = false)
     private Evaluation evaluation;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "competency_id", nullable = false)
     private Competency competency;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "score_id", nullable = false)
     private Score score;
 
