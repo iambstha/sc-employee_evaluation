@@ -6,7 +6,6 @@ import lombok.Data;
 public class CompetencyEvaluationResDto {
 
     private Long competencyEvaluationId;
-    private Long evaluationId;
     private Long competencyId;
     private ScoreResDto scoreResDto;
     private String managerComments;
