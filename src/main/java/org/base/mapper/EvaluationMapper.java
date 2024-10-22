@@ -28,7 +28,7 @@ public interface EvaluationMapper {
 
     @Mapping(target = "evaluationId", ignore = true)
     @Mapping(target = "evaluationByType", source = "evaluationByType")
-    Evaluation updateEntityFromDto(EvaluationReqDto evaluationReqDto, @MappingTarget Evaluation existingEvaluation);
+    void updateEntityFromDto(EvaluationReqDto evaluationReqDto, @MappingTarget Evaluation existingEvaluation);
 
     @Named("mapCompetencyEvaluationReqDtos")
     default List<CompetencyEvaluationReqDto> mapCompetencyEvaluationReqDtos(List<CompetencyEvaluation> competencyEvaluations) {
@@ -82,14 +82,14 @@ public interface EvaluationMapper {
         }
 
         return competencyEvaluationReqDtos.stream().map(competencyEvaluationReqDto -> {
-            CompetencyEvaluation entity = new CompetencyEvaluation();
-            entity.setEvaluation(evaluation);
-            entity.setManagerComments(competencyEvaluationReqDto.getManagerComments());
-            entity.setEmployeeComments(competencyEvaluationReqDto.getEmployeeComments());
+            CompetencyEvaluation competencyEvaluation = new CompetencyEvaluation();
+            competencyEvaluation.setEvaluation(evaluation);
+            competencyEvaluation.setManagerComments(competencyEvaluationReqDto.getManagerComments());
+            competencyEvaluation.setEmployeeComments(competencyEvaluationReqDto.getEmployeeComments());
 
             Competency competency = new Competency();
             competency.setCompetencyId(competencyEvaluationReqDto.getCompetencyId());
-            entity.setCompetency(competency);
+            competencyEvaluation.setCompetency(competency);
 
             if (competencyEvaluationReqDto.getScoreReqDto() != null) {
                 Score score = new Score();
@@ -98,35 +98,10 @@ public interface EvaluationMapper {
                 }
                 score.setValue(competencyEvaluationReqDto.getScoreReqDto().getValue());
                 score.setDescription(competencyEvaluationReqDto.getScoreReqDto().getDescription());
-                entity.setScore(score);
+                competencyEvaluation.setScore(score);
             }
-
-            entity.setEvaluation(evaluation);
-
-            return entity;
-
+            return competencyEvaluation;
         }).collect(Collectors.toList());
     }
-
-    @Named("updateCompetencyEvaluationFromReqDto")
-    default void updateCompetencyEvaluationFromReqDto(CompetencyEvaluationReqDto competencyEvaluationReqDto, CompetencyEvaluation entity) {
-        entity.setManagerComments(competencyEvaluationReqDto.getManagerComments());
-        entity.setEmployeeComments(competencyEvaluationReqDto.getEmployeeComments());
-
-        Competency competency = new Competency();
-        competency.setCompetencyId(competencyEvaluationReqDto.getCompetencyId());
-        entity.setCompetency(competency);
-
-        if (competencyEvaluationReqDto.getScoreReqDto() != null) {
-            Score score = new Score();
-            if (competencyEvaluationReqDto.getScoreReqDto().getScoreId() != null) {
-                score.setScoreId(competencyEvaluationReqDto.getScoreReqDto().getScoreId());
-            }
-            score.setValue(competencyEvaluationReqDto.getScoreReqDto().getValue());
-            score.setDescription(competencyEvaluationReqDto.getScoreReqDto().getDescription());
-            entity.setScore(score);
-        }
-    }
-
 
 }

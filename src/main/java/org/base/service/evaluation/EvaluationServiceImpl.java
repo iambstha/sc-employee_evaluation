@@ -10,10 +10,7 @@ import org.base.dto.EvaluationResDto;
 import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.EvaluationMapper;
-import org.base.model.Competency;
-import org.base.model.CompetencyEvaluation;
-import org.base.model.Evaluation;
-import org.base.model.Score;
+import org.base.model.*;
 import org.base.repository.CompetencyEvaluationRepository;
 import org.base.repository.CompetencyRepository;
 import org.base.repository.EvaluationRepository;
@@ -115,65 +112,38 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     public EvaluationResDto updateById(Long id, EvaluationReqDto evaluationReqDto) {
-        try {
+        try{
             Evaluation existingEvaluation = evaluationRepository.findByIdOptional(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Evaluation with id " + id + " not found."));
+                    .orElseThrow(() -> new ResourceNotFoundException("Evaluation with ID " + id + " not found."));
 
-            Evaluation updatedEvaluation = evaluationMapper.updateEntityFromDto(evaluationReqDto, existingEvaluation);
+            evaluationMapper.updateEntityFromDto(evaluationReqDto, existingEvaluation);
 
-            updatedEvaluation.setEvaluationId(existingEvaluation.getEvaluationId());
+            if (evaluationReqDto.getCompetencyEvaluations() != null && !evaluationReqDto.getCompetencyEvaluations().isEmpty()) {
+                existingEvaluation.getCompetencyEvaluations().clear();
 
-            existingEvaluation.getCompetencyEvaluations().forEach(competencyEvaluation -> {
-                competencyEvaluation.setEvaluation(null);
-                competencyEvaluationRepository.delete(competencyEvaluation);
-            });
+                List<CompetencyEvaluation> competencyEvaluations = evaluationMapper.mapCompetencyEvaluationFromReqDtos(
+                        evaluationReqDto.getCompetencyEvaluations(), existingEvaluation
+                );
 
-            List<CompetencyEvaluation> competencyEvaluations = evaluationMapper.mapCompetencyEvaluationFromReqDtos(
-                    evaluationReqDto.getCompetencyEvaluations(), updatedEvaluation
-            );
-
-            for (CompetencyEvaluation competencyEvaluation : competencyEvaluations) {
-                Competency competency = competencyEvaluation.getCompetency();
-                if (competency.getCompetencyId() != null) {
-                    Competency existingCompetency = competencyRepository.findById(competency.getCompetencyId());
-                    if (existingCompetency != null) {
-                        competencyEvaluation.setCompetency(existingCompetency);
-                    }
-                }
-
-                if (competencyEvaluation.getScore() != null) {
+                for (CompetencyEvaluation competencyEvaluation : competencyEvaluations) {
                     Score score = competencyEvaluation.getScore();
-                    if (score.getScoreId() != null) {
-                        Score existingScore = scoreRepository.findById(score.getScoreId());
-                        if (existingScore != null) {
-                            existingScore.setValue(score.getValue());
-                            existingScore.setDescription(score.getDescription());
-                            competencyEvaluation.setScore(existingScore);
+                    if (score != null) {
+                        if (score.getScoreId() == null) {
+                            scoreRepository.persist(score);
                         } else {
-                            throw new ResourceNotFoundException("Score with id " + score.getScoreId() + " not found.");
+                            scoreRepository.getEntityManager().merge(score);
                         }
-                    } else {
-                        scoreRepository.persist(score);
-                        competencyEvaluation.setScore(score);
                     }
                 }
 
+                existingEvaluation.getCompetencyEvaluations().addAll(competencyEvaluations);
             }
 
-            updatedEvaluation.setCompetencyEvaluations(competencyEvaluations);
+            evaluationRepository.getEntityManager().merge(existingEvaluation);
 
-            updatedEvaluation.setCreatedBy(existingEvaluation.getCreatedBy());
-            updatedEvaluation.setUpdatedBy(null);
-            updatedEvaluation.setUpdatedDate(LocalDateTime.now());
-
-            evaluationRepository.getEntityManager().merge(updatedEvaluation);
-
-            return evaluationMapper.toResDto(updatedEvaluation);
-
-        } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException(e.getMessage());
-        } catch (Exception e) {
-            throw new BadRequestException("Failed to update evaluation: " + e.getMessage());
+            return evaluationMapper.toResDto(existingEvaluation);
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
         }
     }
 

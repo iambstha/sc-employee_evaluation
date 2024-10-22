@@ -23,7 +23,7 @@ public class Evaluation extends BaseEntity {
     @Column(name = "employee_id")
     private Long employeeId;
 
-    @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CompetencyEvaluation> competencyEvaluations;
 
     @Enumerated(EnumType.STRING)
