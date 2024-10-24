@@ -135,7 +135,6 @@ public class CompetencyEvaluationServiceImpl implements CompetencyEvaluationServ
                 } else {
                     scoreRepository.getEntityManager().merge(score);
                 }
-//                existingCompetencyEvaluation.setScore(score);
             }
 
             competencyEvaluationRepository.getEntityManager().merge(existingCompetencyEvaluation);

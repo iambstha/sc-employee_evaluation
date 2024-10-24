@@ -154,6 +154,10 @@ public class EvaluationServiceImpl implements EvaluationService {
     public void deleteById(Long id) {
         try {
             getById(id);
+            Evaluation evaluation = evaluationRepository.findById(id);
+            for (CompetencyEvaluation competencyEvaluation : evaluation.getCompetencyEvaluations()) {
+                competencyEvaluationRepository.delete(competencyEvaluation);
+            }
             evaluationRepository.deleteById(id);
         } catch (Exception e) {
             throw new ResourceNotFoundException("Competency evaluation with ID " + id + " could not be deleted: " + e.getMessage());
