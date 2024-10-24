@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.base.domain.BaseEntity;
+import org.base.model.enums.EmployeeType;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -22,11 +23,11 @@ public class CompetencyGroupComment extends BaseEntity {
     @JsonIgnore
     private CompetencyGroupAssessment competencyGroupAssessment;
 
-    @Column(name = "rating")
-    private Integer rating;
-
     @Column(name = "employee_id")
     private Long employeeId;
+
+    @Column(name = "employee_type")
+    private EmployeeType employeeType;
 
     @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;

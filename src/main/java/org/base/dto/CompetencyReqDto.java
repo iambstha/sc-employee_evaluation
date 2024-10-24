@@ -9,6 +9,7 @@ import java.util.List;
 public class CompetencyReqDto {
 
     private Long competencyId;
+    private Long competencyGroupNumber;
     private CompetencyType competencyType;
     private String subCompetencyType;
     private String name;

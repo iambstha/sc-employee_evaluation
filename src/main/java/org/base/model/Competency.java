@@ -19,6 +19,9 @@ public class Competency extends BaseEntity {
     @Column(name = "competency_id", nullable = false)
     private Long competencyId;
 
+    @Column(name = "competency_group_number")
+    private Long competencyGroupNumber;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "competency_type")
     private CompetencyType competencyType;

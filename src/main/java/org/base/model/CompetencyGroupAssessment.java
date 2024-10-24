@@ -22,19 +22,11 @@ public class CompetencyGroupAssessment extends BaseEntity {
     @Column(name = "competency_group_assessment_id", nullable = false)
     private Long competencyGroupAssessmentId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "competency_type")
-    private CompetencyType competencyType;
-
-    @Column(name = "sub_competency_type")
-    private String subCompetencyType;
+    @Column(name = "competency_group_number")
+    private Long competencyGroupNumber;
 
     @Column(name = "weightage")
     private BigDecimal weightage;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "priority")
-    private CompetencyPriority priority;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
