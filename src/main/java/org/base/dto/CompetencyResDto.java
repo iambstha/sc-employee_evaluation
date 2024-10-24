@@ -13,6 +13,6 @@ public class CompetencyResDto {
     private String subCompetencyType;
     private String name;
     private String description;
-    private List<GuidelineResDto> guidelineResDtos;
+    private List<GuidelineResDto> guidelines;
 
 }

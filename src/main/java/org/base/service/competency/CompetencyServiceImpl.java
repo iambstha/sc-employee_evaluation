@@ -37,7 +37,7 @@ public class CompetencyServiceImpl implements CompetencyService {
             }
 
             Competency competency = competencyMapper.toEntity(competencyReqDto);
-            List<Guideline> guidelines = competencyMapper.mapGuidelinesFromDtos(competencyReqDto.getGuidelineReqDtos(), competency);
+            List<Guideline> guidelines = competencyMapper.mapGuidelinesFromDtos(competencyReqDto.getGuidelines(), competency);
             competency.setGuidelines(guidelines);
             competency.setCreatedBy(null);
 
@@ -78,7 +78,7 @@ public class CompetencyServiceImpl implements CompetencyService {
             competencyMapper.updateEntityFromDto(competencyReqDto, existingCompetence);
 
             existingCompetence.getGuidelines().clear();
-            List<Guideline> guidelines = competencyMapper.mapGuidelinesFromDtos(competencyReqDto.getGuidelineReqDtos(), existingCompetence);
+            List<Guideline> guidelines = competencyMapper.mapGuidelinesFromDtos(competencyReqDto.getGuidelines(), existingCompetence);
             existingCompetence.getGuidelines().addAll(guidelines);
 
             competencyRepository.getEntityManager().merge(existingCompetence);

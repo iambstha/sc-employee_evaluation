@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 @Mapper(config = QuarkusMappingConfig.class)
 public interface CompetencyMapper {
 
-    @Mapping(source = "guidelines", target = "guidelineReqDtos", qualifiedByName = "mapGuidelineReqDtos")
+    @Mapping(source = "guidelines", target = "guidelines", qualifiedByName = "mapGuidelineReqDtos")
     CompetencyReqDto toReqDto(Competency competency);
 
-    @Mapping(source = "guidelines", target = "guidelineResDtos", qualifiedByName = "mapGuidelineResDtos")
+    @Mapping(source = "guidelines", target = "guidelines", qualifiedByName = "mapGuidelineResDtos")
     CompetencyResDto toResDto(Competency competency);
 
     @Mapping(target = "competencyId", ignore = true)

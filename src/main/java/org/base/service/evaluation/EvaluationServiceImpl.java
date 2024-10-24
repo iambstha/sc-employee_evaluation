@@ -55,25 +55,27 @@ public class EvaluationServiceImpl implements EvaluationService {
             Evaluation evaluation = evaluationMapper.toEntity(evaluationReqDto);
             List<CompetencyEvaluation> competencyEvaluations = evaluationMapper.mapCompetencyEvaluationFromReqDtos(evaluationReqDto.getCompetencyEvaluations(), evaluation);
 
-            for (CompetencyEvaluation competencyEvaluation : competencyEvaluations) {
-                Competency competency = competencyEvaluation.getCompetency();
-                if (competency.getCompetencyId() != null) {
-                    Competency existingCompetency = competencyRepository.findById(competency.getCompetencyId());
-                    if (existingCompetency != null) {
-                        competencyEvaluation.setCompetency(existingCompetency);
+            if(evaluationReqDto.getCompetencyEvaluations() != null){
+                for (CompetencyEvaluation competencyEvaluation : competencyEvaluations) {
+                    Competency competency = competencyEvaluation.getCompetency();
+                    if (competency.getCompetencyId() != null) {
+                        Competency existingCompetency = competencyRepository.findById(competency.getCompetencyId());
+                        if (existingCompetency != null) {
+                            competencyEvaluation.setCompetency(existingCompetency);
+                        }
                     }
-                }
-                if (competencyEvaluation.getScore() != null) {
-                    Score score = competencyEvaluation.getScore();
-                    if (score.getScoreId() != null) {
-                        Score existingScore = scoreRepository.findById(score.getScoreId());
-                        if (existingScore != null) {
-                            competencyEvaluation.setScore(existingScore);
+                    if (competencyEvaluation.getScore() != null) {
+                        Score score = competencyEvaluation.getScore();
+                        if (score.getScoreId() != null) {
+                            Score existingScore = scoreRepository.findById(score.getScoreId());
+                            if (existingScore != null) {
+                                competencyEvaluation.setScore(existingScore);
+                            } else {
+                                scoreRepository.persist(score);
+                            }
                         } else {
                             scoreRepository.persist(score);
                         }
-                    } else {
-                        scoreRepository.persist(score);
                     }
                 }
             }

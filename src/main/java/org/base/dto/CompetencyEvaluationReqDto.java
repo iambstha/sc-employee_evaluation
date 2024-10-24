@@ -7,7 +7,8 @@ public class CompetencyEvaluationReqDto {
 
     private Long competencyEvaluationId;
     private Long competencyId;
-    private ScoreReqDto scoreReqDto;
+    private Long evaluationId;
+    private ScoreReqDto score;
     private String managerComments;
     private String employeeComments;
 

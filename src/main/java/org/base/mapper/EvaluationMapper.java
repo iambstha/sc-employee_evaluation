@@ -64,7 +64,7 @@ public interface EvaluationMapper {
                 scoreResDto.setScoreId(competencyEvaluation.getScore().getScoreId());
                 scoreResDto.setValue(competencyEvaluation.getScore().getValue());
                 scoreResDto.setDescription(competencyEvaluation.getScore().getDescription());
-                dto.setScoreResDto(scoreResDto);
+                dto.setScore(scoreResDto);
             }
 
             dto.setCompetencyEvaluationId(competencyEvaluation.getCompetencyEvaluationId());
@@ -91,13 +91,13 @@ public interface EvaluationMapper {
             competency.setCompetencyId(competencyEvaluationReqDto.getCompetencyId());
             competencyEvaluation.setCompetency(competency);
 
-            if (competencyEvaluationReqDto.getScoreReqDto() != null) {
+            if (competencyEvaluationReqDto.getScore() != null) {
                 Score score = new Score();
-                if (competencyEvaluationReqDto.getScoreReqDto().getScoreId() != null) {
-                    score.setScoreId(competencyEvaluationReqDto.getScoreReqDto().getScoreId());
+                if (competencyEvaluationReqDto.getScore().getScoreId() != null) {
+                    score.setScoreId(competencyEvaluationReqDto.getScore().getScoreId());
                 }
-                score.setValue(competencyEvaluationReqDto.getScoreReqDto().getValue());
-                score.setDescription(competencyEvaluationReqDto.getScoreReqDto().getDescription());
+                score.setValue(competencyEvaluationReqDto.getScore().getValue());
+                score.setDescription(competencyEvaluationReqDto.getScore().getDescription());
                 competencyEvaluation.setScore(score);
             }
             return competencyEvaluation;
