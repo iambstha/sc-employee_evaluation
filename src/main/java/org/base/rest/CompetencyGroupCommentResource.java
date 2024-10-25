@@ -10,6 +10,8 @@ import org.base.aop.Loggable;
 import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
 import org.base.dto.CompetencyGroupCommentReqDto;
+import org.base.model.CompetencyGroup;
+import org.base.model.enums.EmployeeType;
 import org.base.service.competencyGroupComment.CompetencyGroupCommentService;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
@@ -62,6 +64,23 @@ public class CompetencyGroupCommentResource {
 
         return Response.ok(apiResponse).build();
     }
+    @GET
+    @Path("/filter")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Loggable
+    public Response getByFilters(
+            @QueryParam("employeeType") EmployeeType employeeType,
+            @QueryParam("competencyGroupId") Long competencyGroupId,
+            @QueryParam("employeeId") Long employeeId
+    ) {
+        ApiResponse apiResponse = ApiResponse.builder()
+                .data(service.getByFilters(employeeType, competencyGroupId, employeeId))
+                .message(messageSource.getMessage("fetch.success"))
+                .build();
+
+        return Response.ok(apiResponse).build();
+    }
+
 
     @PUT
     @Path("/{id}")

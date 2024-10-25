@@ -9,8 +9,11 @@ import org.base.dto.CompetencyGroupCommentResDto;
 import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.CompetencyGroupCommentMapper;
+import org.base.model.CompetencyGroup;
 import org.base.model.CompetencyGroupComment;
+import org.base.model.enums.EmployeeType;
 import org.base.repository.CompetencyGroupCommentRepository;
+import org.base.repository.CompetencyGroupRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +27,9 @@ public class CompetencyGroupCommentServiceImpl implements CompetencyGroupComment
 
     @Inject
     CompetencyGroupCommentMapper competencyGroupCommentMapper;
+
+    @Inject
+    CompetencyGroupRepository competencyGroupRepository;
 
 
     @Override
@@ -64,6 +70,18 @@ public class CompetencyGroupCommentServiceImpl implements CompetencyGroupComment
                 .orElseThrow(() -> new ResourceNotFoundException("Competence group comment with ID " + id + " not found."));
 
         return competencyGroupCommentMapper.toResDto(competencyGroupComment);
+    }
+
+    @Override
+    public List<CompetencyGroupCommentResDto> getByFilters(EmployeeType employeeType, Long competencyGroupId, Long employeeId) {
+        CompetencyGroup competencyGroup = null;
+
+        if(competencyGroupId != null){
+            competencyGroup = competencyGroupRepository.findById(competencyGroupId);
+        }
+        List<CompetencyGroupComment> competencyGroupComments = competencyGroupCommentRepository.findByOptionalFilters(employeeType, competencyGroup, employeeId);
+
+        return competencyGroupComments.stream().map(competencyGroupCommentMapper::toResDto).toList();
     }
 
     @Override
