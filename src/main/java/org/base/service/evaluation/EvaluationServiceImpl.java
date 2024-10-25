@@ -137,7 +137,6 @@ public class EvaluationServiceImpl implements EvaluationService {
                         }
                     }
                 }
-
                 existingEvaluation.getCompetencyEvaluations().addAll(competencyEvaluations);
             }
 

@@ -11,7 +11,9 @@ import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.CompetencyGroupMapper;
 import org.base.mapper.CompetencyGroupCommentMapper;
+import org.base.model.Competency;
 import org.base.model.CompetencyGroup;
+import org.base.model.Guideline;
 import org.base.repository.CompetencyGroupRepository;
 import org.base.repository.CompetencyGroupCommentRepository;
 
@@ -79,7 +81,19 @@ public class CompetencyGroupServiceImpl implements CompetencyGroupService {
 
     @Override
     public CompetencyGroupResDto updateById(Long id, CompetencyGroupReqDto competencyGroupReqDto) {
-        return null;
+        try {
+            CompetencyGroup existingCompetenceGroup = competencyGroupRepository.findByIdOptional(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Competence group with ID " + id + " not found."));
+
+            competencyGroupMapper.updateEntityFromDto(competencyGroupReqDto, existingCompetenceGroup);
+            competencyGroupRepository.getEntityManager().merge(existingCompetenceGroup);
+
+            return competencyGroupMapper.toResDto(existingCompetenceGroup);
+        } catch (ResourceNotFoundException e){
+            throw e;
+        }catch (Exception e) {
+            throw new BadRequestException("Competency group could not be updated" + e.getMessage());
+        }
     }
 
     @Override
