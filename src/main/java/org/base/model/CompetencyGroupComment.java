@@ -19,9 +19,9 @@ public class CompetencyGroupComment extends BaseEntity {
     private Long competencyGroupCommentId;
 
     @ManyToOne
-    @JoinColumn(name = "competency_group_assessment_id", nullable = false)
+    @JoinColumn(name = "competency_group_id", nullable = false)
     @JsonIgnore
-    private CompetencyGroupAssessment competencyGroupAssessment;
+    private CompetencyGroup competencyGroup;
 
     @Column(name = "employee_id")
     private Long employeeId;

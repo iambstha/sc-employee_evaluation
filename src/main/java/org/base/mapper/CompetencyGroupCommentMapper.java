@@ -2,7 +2,7 @@ package org.base.mapper;
 
 import org.base.dto.CompetencyGroupCommentReqDto;
 import org.base.dto.CompetencyGroupCommentResDto;
-import org.base.model.CompetencyGroupAssessment;
+import org.base.model.CompetencyGroup;
 import org.base.model.CompetencyGroupComment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,37 +12,38 @@ import org.mapstruct.Named;
 @Mapper(config = QuarkusMappingConfig.class)
 public interface CompetencyGroupCommentMapper {
 
-    @Mapping(source = "competencyGroupAssessment", target = "competencyGroupAssessmentId", qualifiedByName = "mapCompetencyGroupAssessmentId")
+    @Mapping(source = "competencyGroup", target = "competencyGroupId", qualifiedByName = "mapCompetencyGroupId")
     CompetencyGroupCommentReqDto toReqDto(CompetencyGroupComment competencyGroupComment);
 
-    @Mapping(source = "competencyGroupAssessment", target = "competencyGroupAssessmentId", qualifiedByName = "mapCompetencyGroupAssessmentId")
+    @Mapping(source = "competencyGroup", target = "competencyGroupId", qualifiedByName = "mapCompetencyGroupId")
     CompetencyGroupCommentResDto toResDto(CompetencyGroupComment competencyGroupComment);
 
     @Mapping(target = "competencyGroupCommentId", ignore = true)
-    @Mapping(source = "competencyGroupAssessmentId", target = "competencyGroupAssessment", qualifiedByName = "mapCompetencyGroupAssessmentFromId")
+    @Mapping(source = "competencyGroupId", target = "competencyGroup", qualifiedByName = "mapCompetencyGroupFromId")
+    @Mapping(source = "employeeType", target = "employeeType")
     CompetencyGroupComment toEntity(CompetencyGroupCommentReqDto competencyGroupCommentReqDto);
 
     @Mapping(target = "competencyGroupCommentId", ignore = true)
-    @Mapping(source = "competencyGroupAssessmentId", target = "competencyGroupAssessment", qualifiedByName = "mapCompetencyGroupAssessmentFromId")
+    @Mapping(source = "competencyGroupId", target = "competencyGroup", qualifiedByName = "mapCompetencyGroupFromId")
     @Mapping(source = "employeeType", target = "employeeType")
     void updateEntityFromDto(CompetencyGroupCommentReqDto competencyGroupCommentReqDto, @MappingTarget CompetencyGroupComment existingCompetencyGroupComment);
 
-    @Named("mapCompetencyGroupAssessmentId")
-    default Long mapCompetencyGroupAssessmentId(CompetencyGroupAssessment competencyGroupAssessment) {
-        if (competencyGroupAssessment == null) {
+    @Named("mapCompetencyGroupId")
+    default Long mapCompetencyGroupId(CompetencyGroup competencyGroup) {
+        if (competencyGroup == null) {
             return null;
         }
-        return competencyGroupAssessment.getCompetencyGroupAssessmentId();
+        return competencyGroup.getCompetencyGroupId();
     }
 
-    @Named("mapCompetencyGroupAssessmentFromId")
-    default CompetencyGroupAssessment mapCompetencyGroupAssessmentFromId(Long competencyGroupAssessmentId) {
-        if (competencyGroupAssessmentId == null) {
+    @Named("mapCompetencyGroupFromId")
+    default CompetencyGroup mapCompetencyGroupFromId(Long competencyGroupId) {
+        if (competencyGroupId == null) {
             return null;
         }
-        CompetencyGroupAssessment competencyGroupAssessment = new CompetencyGroupAssessment();
-        competencyGroupAssessment.setCompetencyGroupAssessmentId(competencyGroupAssessmentId);
-        return competencyGroupAssessment;
+        CompetencyGroup competencyGroup = new CompetencyGroup();
+        competencyGroup.setCompetencyGroupId(competencyGroupId);
+        return competencyGroup;
     }
 
 }

@@ -52,10 +52,10 @@ public class MessageSourceProducer {
     }
 
     @Produces
-    @Named("competencyGroupAssessmentMessageSource")
-    public MessageSource competencyGroupAssessmentMessageSource() {
+    @Named("competencyGroupMessageSource")
+    public MessageSource competencyGroupMessageSource() {
         MessageSource messageSource = new MessageSource();
-        messageSource.loadControllerMessages("competencyGroupAssessment", "en");
+        messageSource.loadControllerMessages("competencyGroup", "en");
         return messageSource;
     }
 

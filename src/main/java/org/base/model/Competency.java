@@ -1,10 +1,10 @@
 package org.base.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.base.domain.BaseEntity;
-import org.base.model.enums.CompetencyType;
 
 import java.util.List;
 
@@ -19,15 +19,10 @@ public class Competency extends BaseEntity {
     @Column(name = "competency_id", nullable = false)
     private Long competencyId;
 
-    @Column(name = "competency_group_number")
-    private Long competencyGroupNumber;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "competency_type")
-    private CompetencyType competencyType;
-
-    @Column(name = "sub_competency_type")
-    private String subCompetencyType;
+    @ManyToOne
+    @JoinColumn(name = "competency_group_id", nullable = false)
+    @JsonIgnore
+    private CompetencyGroup competencyGroup;
 
     @Column(name = "name")
     private String name;

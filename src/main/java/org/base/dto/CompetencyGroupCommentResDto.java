@@ -7,7 +7,7 @@ import org.base.model.enums.EmployeeType;
 public class CompetencyGroupCommentResDto {
 
     private Long competencyGroupCommentId;
-    private Long competencyGroupAssessmentId;
+    private Long competencyGroupId;
     private Long employeeId;
     private EmployeeType employeeType;
     private String comment;

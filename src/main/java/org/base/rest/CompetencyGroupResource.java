@@ -9,27 +9,27 @@ import lombok.extern.slf4j.Slf4j;
 import org.base.aop.Loggable;
 import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
-import org.base.dto.CompetencyGroupAssessmentReqDto;
-import org.base.service.competencyGroupAssessment.CompetencyGroupAssessmentService;
+import org.base.dto.CompetencyGroupReqDto;
+import org.base.service.competencyGroup.CompetencyGroupService;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 @Slf4j
-@Path("/competency-group-assessment")
-public class CompetencyGroupAssessmentResource {
+@Path("/competency-group")
+public class CompetencyGroupResource {
 
     @Inject
-    CompetencyGroupAssessmentService service;
+    CompetencyGroupService service;
 
     @Inject
-    @Named("competencyGroupAssessmentMessageSource")
+    @Named("competencyGroupMessageSource")
     MessageSource messageSource;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Loggable
-    public Response save(@RequestBody CompetencyGroupAssessmentReqDto competencyGroupAssessmentReqDto) {
+    public Response save(@RequestBody CompetencyGroupReqDto competencyGroupReqDto) {
         ApiResponse apiResponse = ApiResponse.builder()
-                .data(service.save(competencyGroupAssessmentReqDto))
+                .data(service.save(competencyGroupReqDto))
                 .statusCode(Response.Status.CREATED.getStatusCode())
                 .status(Response.Status.CREATED.getReasonPhrase())
                 .message(messageSource.getMessage("creation.success"))
@@ -68,9 +68,9 @@ public class CompetencyGroupAssessmentResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Loggable
-    public Response updateById(@PathParam("id") Long id, @RequestBody CompetencyGroupAssessmentReqDto competencyGroupAssessmentReqDto) {
+    public Response updateById(@PathParam("id") Long id, @RequestBody CompetencyGroupReqDto competencyGroupReqDto) {
         ApiResponse apiResponse = ApiResponse.builder()
-                .data(service.updateById(id, competencyGroupAssessmentReqDto))
+                .data(service.updateById(id, competencyGroupReqDto))
                 .message(messageSource.getMessage("update.success"))
                 .build();
 
