@@ -11,12 +11,12 @@ import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.EvaluationMapper;
 import org.base.model.*;
+import org.base.model.enums.EvaluationByType;
 import org.base.repository.CompetencyEvaluationRepository;
 import org.base.repository.CompetencyRepository;
 import org.base.repository.EvaluationRepository;
 import org.base.repository.ScoreRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,6 +110,17 @@ public class EvaluationServiceImpl implements EvaluationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Competency evaluation with ID " + id + " not found."));
 
         return evaluationMapper.toResDto(evaluation);
+    }
+
+    @Override
+    public List<EvaluationResDto> getByFilters(EvaluationByType evaluationByType, Long employeeId) {
+        try{
+            List<Evaluation> evaluations = evaluationRepository.findByOptionalFilters(evaluationByType, employeeId);
+
+            return evaluations.stream().map(evaluationMapper::toResDto).toList();
+        }catch (Exception e){
+            throw new BadRequestException("Error occurred while fetching competency evaluation: " + e.getMessage(), e);
+        }
     }
 
     @Override

@@ -10,6 +10,9 @@ import org.base.aop.Loggable;
 import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
 import org.base.dto.CompetencyGroupReqDto;
+import org.base.model.enums.CompetencyStatus;
+import org.base.model.enums.CompetencyType;
+import org.base.model.enums.EvaluationByType;
 import org.base.service.competencyGroup.CompetencyGroupService;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
@@ -57,6 +60,21 @@ public class CompetencyGroupResource {
     public Response getById(@PathParam("id") Long id) {
         ApiResponse apiResponse = ApiResponse.builder()
                 .data(service.getById(id))
+                .message(messageSource.getMessage("fetch.success"))
+                .build();
+
+        return Response.ok(apiResponse).build();
+    }
+
+    @GET
+    @Path("/filter")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Loggable
+    public Response getByFilters(
+            @QueryParam("competencyType") CompetencyType competencyType,
+            @QueryParam("competencyStatus") CompetencyStatus status) {
+        ApiResponse apiResponse = ApiResponse.builder()
+                .data(service.getByFilters(competencyType, status))
                 .message(messageSource.getMessage("fetch.success"))
                 .build();
 

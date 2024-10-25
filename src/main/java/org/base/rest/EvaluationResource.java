@@ -10,6 +10,8 @@ import org.base.aop.Loggable;
 import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
 import org.base.dto.EvaluationReqDto;
+import org.base.model.enums.EmployeeType;
+import org.base.model.enums.EvaluationByType;
 import org.base.service.evaluation.EvaluationService;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
@@ -57,6 +59,21 @@ public class EvaluationResource {
     public Response getById(@PathParam("id") Long id) {
         ApiResponse apiResponse = ApiResponse.builder()
                 .data(service.getById(id))
+                .message(messageSource.getMessage("fetch.success"))
+                .build();
+
+        return Response.ok(apiResponse).build();
+    }
+
+    @GET
+    @Path("/filter")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Loggable
+    public Response getByFilters(
+            @QueryParam("evaluationByType") EvaluationByType evaluationByType,
+            @QueryParam("employeeId") Long employeeId) {
+        ApiResponse apiResponse = ApiResponse.builder()
+                .data(service.getByFilters(evaluationByType, employeeId))
                 .message(messageSource.getMessage("fetch.success"))
                 .build();
 

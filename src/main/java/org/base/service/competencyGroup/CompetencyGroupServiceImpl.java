@@ -11,9 +11,9 @@ import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.CompetencyGroupMapper;
 import org.base.mapper.CompetencyGroupCommentMapper;
-import org.base.model.Competency;
 import org.base.model.CompetencyGroup;
-import org.base.model.Guideline;
+import org.base.model.enums.CompetencyStatus;
+import org.base.model.enums.CompetencyType;
 import org.base.repository.CompetencyGroupRepository;
 import org.base.repository.CompetencyGroupCommentRepository;
 
@@ -77,6 +77,17 @@ public class CompetencyGroupServiceImpl implements CompetencyGroupService {
                 .orElseThrow(() -> new ResourceNotFoundException("Competency group with ID " + id + " not found."));
 
         return competencyGroupMapper.toResDto(competencyGroup);
+    }
+
+    @Override
+    public List<CompetencyGroupResDto> getByFilters(CompetencyType competencyType, CompetencyStatus status) {
+        try{
+            List<CompetencyGroup> competencyGroups = competencyGroupRepository.findByOptionalFilters(competencyType, status);
+
+            return competencyGroups.stream().map(competencyGroupMapper::toResDto).toList();
+        }catch (Exception e){
+            throw new BadRequestException("Error occurred while fetching competency group: " + e.getMessage(), e);
+        }
     }
 
     @Override

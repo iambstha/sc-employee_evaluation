@@ -74,14 +74,18 @@ public class CompetencyGroupCommentServiceImpl implements CompetencyGroupComment
 
     @Override
     public List<CompetencyGroupCommentResDto> getByFilters(EmployeeType employeeType, Long competencyGroupId, Long employeeId) {
-        CompetencyGroup competencyGroup = null;
+        try{
+            CompetencyGroup competencyGroup = null;
 
-        if(competencyGroupId != null){
-            competencyGroup = competencyGroupRepository.findById(competencyGroupId);
+            if(competencyGroupId != null){
+                competencyGroup = competencyGroupRepository.findById(competencyGroupId);
+            }
+            List<CompetencyGroupComment> competencyGroupComments = competencyGroupCommentRepository.findByOptionalFilters(employeeType, competencyGroup, employeeId);
+
+            return competencyGroupComments.stream().map(competencyGroupCommentMapper::toResDto).toList();
+        }catch (Exception e){
+            throw new BadRequestException("Error occurred while fetching competency group comments: " + e.getMessage(), e);
         }
-        List<CompetencyGroupComment> competencyGroupComments = competencyGroupCommentRepository.findByOptionalFilters(employeeType, competencyGroup, employeeId);
-
-        return competencyGroupComments.stream().map(competencyGroupCommentMapper::toResDto).toList();
     }
 
     @Override
