@@ -3,7 +3,7 @@ package org.base.mapper;
 import org.base.dto.CompetencyGroupCommentReqDto;
 import org.base.dto.CompetencyGroupCommentResDto;
 import org.base.model.CompetencyGroup;
-import org.base.model.CompetencyGroupComment;
+import org.base.model.CompetencyGroupCommentHigher;
 import org.base.model.Evaluation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,33 +11,33 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 @Mapper(config = QuarkusMappingConfig.class)
-public interface CompetencyGroupCommentMapper {
+public interface CompetencyGroupCommentHigherMapper {
 
-    @Mapping(source = "competencyGroupCommentId", target = "commentId")
+    @Mapping(source = "competencyGroupCommentHigherId", target = "commentId")
     @Mapping(source = "competencyGroup", target = "competencyGroupId", qualifiedByName = "mapCompetencyGroupId")
     @Mapping(source = "evaluation", target = "evaluationId", qualifiedByName = "mapEvaluationId")
-    CompetencyGroupCommentReqDto toReqDto(CompetencyGroupComment competencyGroupComment);
+    CompetencyGroupCommentReqDto toReqDto(CompetencyGroupCommentHigher competencyGroupCommentHigher);
 
-    @Mapping(source = "competencyGroupCommentId", target = "commentId")
+    @Mapping(source = "competencyGroupCommentHigherId", target = "commentId")
     @Mapping(source = "competencyGroup", target = "competencyGroupId", qualifiedByName = "mapCompetencyGroupId")
     @Mapping(source = "evaluation", target = "evaluationId", qualifiedByName = "mapEvaluationId")
-    CompetencyGroupCommentResDto toResDto(CompetencyGroupComment competencyGroupComment);
+    CompetencyGroupCommentResDto toResDto(CompetencyGroupCommentHigher competencyGroupCommentHigher);
 
-    @Mapping(target = "competencyGroupCommentId", ignore = true)
-//    @Mapping(source = "commentId", target = "competencyGroupCommentId")
+    @Mapping(target = "competencyGroupCommentHigherId", ignore = true)
+//    @Mapping(source = "commentId", target = "competencyGroupCommentHigherId")
     @Mapping(source = "competencyGroupId", target = "competencyGroup", qualifiedByName = "mapCompetencyGroupFromId")
     @Mapping(source = "evaluationId", target = "evaluation", qualifiedByName = "mapEvaluationFromId")
     @Mapping(source = "employeeType", target = "employeeType")
     @Mapping(source = "reviewStage", target = "reviewStage")
-    CompetencyGroupComment toEntity(CompetencyGroupCommentReqDto competencyGroupCommentReqDto);
+    CompetencyGroupCommentHigher toEntity(CompetencyGroupCommentReqDto competencyGroupCommentReqDto);
 
-    @Mapping(target = "competencyGroupCommentId", ignore = true)
-//    @Mapping(source = "commentId", target = "competencyGroupCommentId")
+    @Mapping(target = "competencyGroupCommentHigherId", ignore = true)
+//    @Mapping(source = "commentId", target = "competencyGroupCommentHigherId")
     @Mapping(source = "competencyGroupId", target = "competencyGroup", qualifiedByName = "mapCompetencyGroupFromId")
     @Mapping(source = "evaluationId", target = "evaluation", qualifiedByName = "mapEvaluationFromId")
     @Mapping(source = "employeeType", target = "employeeType")
     @Mapping(source = "reviewStage", target = "reviewStage")
-    void updateEntityFromDto(CompetencyGroupCommentReqDto competencyGroupCommentReqDto, @MappingTarget CompetencyGroupComment existingCompetencyGroupComment);
+    void updateEntityFromDto(CompetencyGroupCommentReqDto competencyGroupCommentReqDto, @MappingTarget CompetencyGroupCommentHigher existingCompetencyGroupCommentHigher);
 
     @Named("mapEvaluationId")
     default Long mapEvaluationId(Evaluation evaluation) {
@@ -74,5 +74,6 @@ public interface CompetencyGroupCommentMapper {
         competencyGroup.setCompetencyGroupId(competencyGroupId);
         return competencyGroup;
     }
+
 
 }

@@ -38,4 +38,7 @@ public class CompetencyGroup extends BaseEntity {
     @OneToMany(mappedBy = "competencyGroup", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CompetencyGroupComment> competencyGroupComments;
 
+    @OneToMany(mappedBy = "competencyGroup", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CompetencyGroupCommentHigher> competencyGroupCommentHighers;
+
 }

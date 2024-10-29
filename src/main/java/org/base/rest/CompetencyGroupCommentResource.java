@@ -70,10 +70,11 @@ public class CompetencyGroupCommentResource {
     public Response getByFilters(
             @QueryParam("employeeType") EmployeeType employeeType,
             @QueryParam("competencyGroupId") Long competencyGroupId,
+            @QueryParam("evaluationId") Long evaluationId,
             @QueryParam("employeeId") Long employeeId
     ) {
         ApiResponse apiResponse = ApiResponse.builder()
-                .data(service.getByFilters(employeeType, competencyGroupId, employeeId))
+                .data(service.getByFilters(employeeType, competencyGroupId, evaluationId, employeeId))
                 .message(messageSource.getMessage("fetch.success"))
                 .build();
 

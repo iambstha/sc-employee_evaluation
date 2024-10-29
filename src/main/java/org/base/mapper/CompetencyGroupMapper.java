@@ -39,7 +39,7 @@ public interface CompetencyGroupMapper {
             dto.setCompetencyGroupId(Optional.ofNullable(competencyGroupComment.getCompetencyGroup())
                     .map(CompetencyGroup::getCompetencyGroupId)
                     .orElse(null));
-            dto.setCompetencyGroupCommentId(competencyGroupComment.getCompetencyGroupCommentId());
+            dto.setCommentId(competencyGroupComment.getCompetencyGroupCommentId());
             dto.setComment(competencyGroupComment.getComment());
             dto.setEmployeeId(competencyGroupComment.getEmployeeId());
             dto.setEmployeeType(competencyGroupComment.getEmployeeType());

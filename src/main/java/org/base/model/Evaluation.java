@@ -1,5 +1,6 @@
 package org.base.model;
 
+import io.smallrye.common.constraint.NotNull;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,21 +24,28 @@ public class Evaluation extends BaseEntity {
     private Long evaluationId;
 
     @Column(name = "employee_id")
+    @NotNull
     private Long employeeId;
 
     @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CompetencyEvaluation> competencyEvaluations;
 
+    @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CompetencyGroupComment> competencyGroupComments;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "review_stage")
+    @NotNull
     private ReviewStage reviewStage;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "approval_stage")
+    @NotNull
     private ApprovalStage approvalStage;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "evaluation_by_type")
+    @NotNull
     private EvaluationByType evaluationByType;
 
     @Column(name = "period_from", nullable = false)

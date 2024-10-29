@@ -5,6 +5,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.base.model.CompetencyGroup;
 import org.base.model.CompetencyGroupComment;
+import org.base.model.Evaluation;
 import org.base.model.enums.EmployeeType;
 
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public class CompetencyGroupCommentRepository implements PanacheRepositoryBase<C
         return find("employeeType", employeeType).stream().toList();
     }
 
-    public List<CompetencyGroupComment> findByOptionalFilters(EmployeeType employeeType, CompetencyGroup competencyGroup, Long employeeId) {
+    public List<CompetencyGroupComment> findByOptionalFilters(EmployeeType employeeType, CompetencyGroup competencyGroup, Evaluation evaluation, Long employeeId) {
         StringBuilder query = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
 
@@ -35,6 +36,11 @@ public class CompetencyGroupCommentRepository implements PanacheRepositoryBase<C
             if (!query.isEmpty()) query.append(" and ");
             query.append("competencyGroup = :competencyGroup");
             params.put("competencyGroup", competencyGroup);
+        }
+        if (evaluation != null) {
+            if (!query.isEmpty()) query.append(" and ");
+            query.append("evaluation = :evaluation");
+            params.put("evaluation", evaluation);
         }
         if (employeeId != null) {
             if (!query.isEmpty()) query.append(" and ");

@@ -11,13 +11,13 @@ import org.base.model.enums.ReviewStage;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-@Table(name = "competency_group_comment")
-public class CompetencyGroupComment extends BaseEntity {
+@Table(name = "competency_group_comment_higher")
+public class CompetencyGroupCommentHigher extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "competency_group_comment_id", nullable = false)
-    private Long competencyGroupCommentId;
+    @Column(name = "competency_group_comment_higher_id", nullable = false)
+    private Long competencyGroupCommentHigherId;
 
     @ManyToOne
     @JoinColumn(name = "competency_group_id", nullable = false)

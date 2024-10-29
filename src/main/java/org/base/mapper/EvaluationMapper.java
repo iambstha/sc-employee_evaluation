@@ -36,6 +36,12 @@ public interface EvaluationMapper {
     @Mapping(target = "evaluationByType", source = "evaluationByType")
     @Mapping(target = "reviewStage", source = "reviewStage")
     @Mapping(target = "approvalStage", source = "approvalStage")
+    Evaluation toEntityFromResDto(EvaluationResDto byId);
+
+    @Mapping(target = "evaluationId", ignore = true)
+    @Mapping(target = "evaluationByType", source = "evaluationByType")
+    @Mapping(target = "reviewStage", source = "reviewStage")
+    @Mapping(target = "approvalStage", source = "approvalStage")
     void updateEntityFromDto(EvaluationReqDto evaluationReqDto, @MappingTarget Evaluation existingEvaluation);
 
     @Named("mapCompetencyEvaluationReqDtos")
@@ -111,5 +117,6 @@ public interface EvaluationMapper {
             return competencyEvaluation;
         }).collect(Collectors.toList());
     }
+
 
 }
