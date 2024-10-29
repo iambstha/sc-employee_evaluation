@@ -12,7 +12,6 @@ import org.base.domain.ApiResponse;
 import org.base.dto.CompetencyGroupReqDto;
 import org.base.model.enums.CompetencyStatus;
 import org.base.model.enums.CompetencyType;
-import org.base.model.enums.EvaluationByType;
 import org.base.service.competencyGroup.CompetencyGroupService;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 

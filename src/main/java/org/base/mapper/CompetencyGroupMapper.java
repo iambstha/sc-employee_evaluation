@@ -1,8 +1,6 @@
 package org.base.mapper;
 
 import org.base.dto.*;
-import org.base.model.Competency;
-import org.base.model.CompetencyEvaluation;
 import org.base.model.CompetencyGroup;
 import org.base.model.CompetencyGroupComment;
 import org.mapstruct.Mapper;

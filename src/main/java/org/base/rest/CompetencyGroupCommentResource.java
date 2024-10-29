@@ -10,7 +10,6 @@ import org.base.aop.Loggable;
 import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
 import org.base.dto.CompetencyGroupCommentReqDto;
-import org.base.model.CompetencyGroup;
 import org.base.model.enums.EmployeeType;
 import org.base.service.competencyGroupComment.CompetencyGroupCommentService;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;

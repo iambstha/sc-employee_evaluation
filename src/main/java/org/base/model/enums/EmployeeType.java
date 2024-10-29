@@ -4,6 +4,7 @@ public enum EmployeeType {
 
     EMPLOYEE,
     LINE_MANAGER,
+    MANAGER
 
 
 }

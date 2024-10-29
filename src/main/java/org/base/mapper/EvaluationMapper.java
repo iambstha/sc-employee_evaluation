@@ -16,18 +16,26 @@ public interface EvaluationMapper {
 
     @Mapping(source = "competencyEvaluations", target = "competencyEvaluations", qualifiedByName = "mapCompetencyEvaluationReqDtos")
     @Mapping(target = "evaluationByType", source = "evaluationByType")
+    @Mapping(target = "reviewStage", source = "reviewStage")
+    @Mapping(target = "approvalStage", source = "approvalStage")
     EvaluationReqDto toReqDto(Evaluation evaluation);
 
     @Mapping(source = "competencyEvaluations", target = "competencyEvaluations", qualifiedByName = "mapCompetencyEvaluationResDtos")
     @Mapping(target = "evaluationByType", source = "evaluationByType")
+    @Mapping(target = "reviewStage", source = "reviewStage")
+    @Mapping(target = "approvalStage", source = "approvalStage")
     EvaluationResDto toResDto(Evaluation evaluation);
 
     @Mapping(target = "evaluationId", ignore = true)
     @Mapping(target = "evaluationByType", source = "evaluationByType")
+    @Mapping(target = "reviewStage", source = "reviewStage")
+    @Mapping(target = "approvalStage", source = "approvalStage")
     Evaluation toEntity(EvaluationReqDto evaluationReqDto);
 
     @Mapping(target = "evaluationId", ignore = true)
     @Mapping(target = "evaluationByType", source = "evaluationByType")
+    @Mapping(target = "reviewStage", source = "reviewStage")
+    @Mapping(target = "approvalStage", source = "approvalStage")
     void updateEntityFromDto(EvaluationReqDto evaluationReqDto, @MappingTarget Evaluation existingEvaluation);
 
     @Named("mapCompetencyEvaluationReqDtos")

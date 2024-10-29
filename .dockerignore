@@ -1,5 +1,9 @@
-*
-!target/*-runner
-!target/*-runner.jar
-!target/lib/*
-!target/quarkus-app/*
+# Ignore the build output directory
+target
+
+# Ignore git and IDE config files
+.git
+.idea
+
+# Allow everything else, including pom.xml and src
+

@@ -10,12 +10,10 @@ import org.base.dto.CompetencyGroupResDto;
 import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.CompetencyGroupMapper;
-import org.base.mapper.CompetencyGroupCommentMapper;
 import org.base.model.CompetencyGroup;
 import org.base.model.enums.CompetencyStatus;
 import org.base.model.enums.CompetencyType;
 import org.base.repository.CompetencyGroupRepository;
-import org.base.repository.CompetencyGroupCommentRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,13 +27,7 @@ public class CompetencyGroupServiceImpl implements CompetencyGroupService {
     CompetencyGroupRepository competencyGroupRepository;
 
     @Inject
-    CompetencyGroupCommentRepository competencyGroupCommentRepository;
-
-    @Inject
     CompetencyGroupMapper competencyGroupMapper;
-
-    @Inject
-    CompetencyGroupCommentMapper competencyGroupCommentMapper;
 
     @Override
     public CompetencyGroupResDto save(CompetencyGroupReqDto competencyGroupReqDto) {

@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.base.domain.BaseEntity;
+import org.base.model.enums.ApprovalStage;
 import org.base.model.enums.EvaluationByType;
+import org.base.model.enums.ReviewStage;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,6 +27,14 @@ public class Evaluation extends BaseEntity {
 
     @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CompetencyEvaluation> competencyEvaluations;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "review_stage")
+    private ReviewStage reviewStage;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "approval_stage")
+    private ApprovalStage approvalStage;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "evaluation_by_type")

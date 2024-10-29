@@ -11,7 +11,9 @@ import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.EvaluationMapper;
 import org.base.model.*;
+import org.base.model.enums.ApprovalStage;
 import org.base.model.enums.EvaluationByType;
+import org.base.model.enums.ReviewStage;
 import org.base.repository.CompetencyEvaluationRepository;
 import org.base.repository.CompetencyRepository;
 import org.base.repository.EvaluationRepository;
@@ -55,7 +57,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             Evaluation evaluation = evaluationMapper.toEntity(evaluationReqDto);
             List<CompetencyEvaluation> competencyEvaluations = evaluationMapper.mapCompetencyEvaluationFromReqDtos(evaluationReqDto.getCompetencyEvaluations(), evaluation);
 
-            if(evaluationReqDto.getCompetencyEvaluations() != null){
+            if (evaluationReqDto.getCompetencyEvaluations() != null) {
                 for (CompetencyEvaluation competencyEvaluation : competencyEvaluations) {
                     Competency competency = competencyEvaluation.getCompetency();
                     if (competency.getCompetencyId() != null) {
@@ -95,11 +97,11 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Override
     public List<EvaluationResDto> getAll() {
         try {
-            return  evaluationRepository.listAll()
+            return evaluationRepository.listAll()
                     .stream()
                     .map(evaluationMapper::toResDto)
                     .toList();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new BadRequestException("Error occurred while fetching competency evaluation: " + e.getMessage(), e);
         }
     }
@@ -113,19 +115,19 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public List<EvaluationResDto> getByFilters(EvaluationByType evaluationByType, Long employeeId) {
-        try{
-            List<Evaluation> evaluations = evaluationRepository.findByOptionalFilters(evaluationByType, employeeId);
+    public List<EvaluationResDto> getByFilters(EvaluationByType evaluationByType, ReviewStage reviewStage, Long employeeId) {
+        try {
+            List<Evaluation> evaluations = evaluationRepository.findByOptionalFilters(evaluationByType, reviewStage, employeeId);
 
             return evaluations.stream().map(evaluationMapper::toResDto).toList();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new BadRequestException("Error occurred while fetching competency evaluation: " + e.getMessage(), e);
         }
     }
 
     @Override
     public EvaluationResDto updateById(Long id, EvaluationReqDto evaluationReqDto) {
-        try{
+        try {
             Evaluation existingEvaluation = evaluationRepository.findByIdOptional(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Evaluation with ID " + id + " not found."));
 
@@ -159,6 +161,28 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
     }
 
+    @Override
+    public EvaluationResDto updateReviewStage(Long id, ReviewStage reviewStage, ApprovalStage approvalStage) {
+        try {
+            Evaluation existingEvaluation = evaluationRepository.findByIdOptional(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Evaluation with ID " + id + " not found."));
+
+            if(reviewStage != null || approvalStage != null){
+                if(reviewStage != null) {
+                    existingEvaluation.setReviewStage(reviewStage);
+                }
+                if(approvalStage != null){
+                    existingEvaluation.setApprovalStage(approvalStage);
+                }
+            }else{
+                throw new BadRequestException("Both review stage and approval stage cannot be null.");
+            }
+            evaluationRepository.getEntityManager().merge(existingEvaluation);
+            return evaluationMapper.toResDto(existingEvaluation);
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
+        }
+    }
 
     @Override
     public void deleteById(Long id) {

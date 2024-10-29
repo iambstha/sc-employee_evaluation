@@ -3,9 +3,9 @@ package org.base.repository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.base.model.CompetencyGroupComment;
 import org.base.model.Evaluation;
 import org.base.model.enums.EvaluationByType;
+import org.base.model.enums.ReviewStage;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class EvaluationRepository implements PanacheRepositoryBase<Evaluation, Long> {
 
 
-    public List<Evaluation> findByOptionalFilters(EvaluationByType evaluationByType, Long employeeId) {
+    public List<Evaluation> findByOptionalFilters(EvaluationByType evaluationByType, ReviewStage reviewStage, Long employeeId) {
 
         StringBuilder query = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
@@ -23,6 +23,11 @@ public class EvaluationRepository implements PanacheRepositoryBase<Evaluation, L
         if (evaluationByType != null) {
             query.append("evaluationByType = :evaluationByType");
             params.put("evaluationByType", evaluationByType);
+        }
+        if (reviewStage != null) {
+            if (!query.isEmpty()) query.append(" and ");
+            query.append("evaluationStage = :evaluationStage");
+            params.put("evaluationStage", reviewStage);
         }
         if (employeeId != null) {
             if (!query.isEmpty()) query.append(" and ");

@@ -10,8 +10,9 @@ import org.base.aop.Loggable;
 import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
 import org.base.dto.EvaluationReqDto;
-import org.base.model.enums.EmployeeType;
+import org.base.model.enums.ApprovalStage;
 import org.base.model.enums.EvaluationByType;
+import org.base.model.enums.ReviewStage;
 import org.base.service.evaluation.EvaluationService;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
@@ -71,9 +72,10 @@ public class EvaluationResource {
     @Loggable
     public Response getByFilters(
             @QueryParam("evaluationByType") EvaluationByType evaluationByType,
+            @QueryParam("evaluationStage") ReviewStage reviewStage,
             @QueryParam("employeeId") Long employeeId) {
         ApiResponse apiResponse = ApiResponse.builder()
-                .data(service.getByFilters(evaluationByType, employeeId))
+                .data(service.getByFilters(evaluationByType, reviewStage, employeeId))
                 .message(messageSource.getMessage("fetch.success"))
                 .build();
 
@@ -88,6 +90,23 @@ public class EvaluationResource {
     public Response updateById(@PathParam("id") Long id, @RequestBody EvaluationReqDto evaluationReqDto) {
         ApiResponse apiResponse = ApiResponse.builder()
                 .data(service.updateById(id, evaluationReqDto))
+                .message(messageSource.getMessage("update.success"))
+                .build();
+
+        return Response.ok(apiResponse).build();
+    }
+
+    @PUT
+    @Path("/stage/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Loggable
+    public Response updateStage(
+            @PathParam("id") Long id,
+            @QueryParam("reviewStage") ReviewStage reviewStage,
+            @QueryParam("approvalStage") ApprovalStage approvalStage) {
+        ApiResponse apiResponse = ApiResponse.builder()
+                .data(service.updateReviewStage(id, reviewStage, approvalStage))
                 .message(messageSource.getMessage("update.success"))
                 .build();
 
