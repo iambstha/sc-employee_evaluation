@@ -3,10 +3,10 @@ package org.base.service.evaluation;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.base.dto.EvaluationReqDto;
 import org.base.dto.EvaluationResDto;
+import org.base.exception.BadRequestException;
 import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.EvaluationMapper;
@@ -102,7 +102,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                     .map(evaluationMapper::toResDto)
                     .toList();
         } catch (Exception e) {
-            throw new BadRequestException("Error occurred while fetching competency evaluation: " + e.getMessage(), e);
+            throw new BadRequestException("Error occurred while fetching competency evaluation: " + e.getMessage());
         }
     }
 
@@ -121,7 +121,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
             return evaluations.stream().map(evaluationMapper::toResDto).toList();
         } catch (Exception e) {
-            throw new BadRequestException("Error occurred while fetching competency evaluation: " + e.getMessage(), e);
+            throw new BadRequestException("Error occurred while fetching competency evaluation: " + e.getMessage());
         }
     }
 
