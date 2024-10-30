@@ -3,9 +3,8 @@ package org.base.repository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.base.aop.RepositoryAccess;
+import org.base.aop.repositoryAccess.RepositoryAccess;
 import org.base.model.CompetencyGroup;
-import org.base.model.Evaluation;
 import org.base.model.enums.CompetencyStatus;
 import org.base.model.enums.CompetencyType;
 

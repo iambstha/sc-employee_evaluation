@@ -1,4 +1,4 @@
-package org.base.aop;
+package org.base.aop.loggable;
 
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
@@ -8,6 +8,7 @@ import jakarta.interceptor.InvocationContext;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
+import org.base.aop.repositoryAccess.RepositoryAccessTracker;
 import org.base.domain.CustomObjectMapper;
 import org.base.model.ApiLog;
 import org.base.repository.ApiLogRepository;

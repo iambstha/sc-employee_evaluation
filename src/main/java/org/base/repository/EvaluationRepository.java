@@ -3,7 +3,7 @@ package org.base.repository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.base.aop.RepositoryAccess;
+import org.base.aop.repositoryAccess.RepositoryAccess;
 import org.base.model.Evaluation;
 import org.base.model.enums.EvaluationByType;
 import org.base.model.enums.ReviewStage;

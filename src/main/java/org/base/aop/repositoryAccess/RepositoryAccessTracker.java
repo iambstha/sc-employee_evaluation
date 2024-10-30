@@ -1,4 +1,4 @@
-package org.base.aop;
+package org.base.aop.repositoryAccess;
 
 import jakarta.enterprise.context.ApplicationScoped;
 

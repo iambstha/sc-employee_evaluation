@@ -9,15 +9,12 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.base.aop.Loggable;
+import org.base.aop.loggable.Loggable;
 import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
-import org.base.dto.ApiLogResDto;
 import org.base.dto.PaginationMetadata;
 import org.base.service.apiLog.ApiLogService;
 import org.base.util.GeneralUtil;
-
-import java.util.List;
 
 @Slf4j
 @Path("/api-logs")

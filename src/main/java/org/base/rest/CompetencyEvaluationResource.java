@@ -6,7 +6,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.base.aop.Loggable;
+import org.base.aop.loggable.Loggable;
 import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
 import org.base.dto.CompetencyEvaluationReqDto;
