@@ -21,10 +21,10 @@ public class CompetencyGroupCommentRepository implements PanacheRepositoryBase<C
         return find("competencyGroupCommentId", competencyGroupCommentId).firstResultOptional();
     }
 
-    public Optional<CompetencyGroupComment> findByIdAndReviewStageOptional(Long id, ReviewStage reviewStage) {
-        String query = "competencyGroupCommentId = :id and reviewStage = :reviewStage";
+    public Optional<CompetencyGroupComment> findByIdAndReviewStageOptional(Long competencyGroupCommentId, ReviewStage reviewStage) {
+        String query = "competencyGroupCommentId = :competencyGroupCommentId and reviewStage = :reviewStage";
         Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
+        params.put("competencyGroupCommentId", competencyGroupCommentId);
         params.put("reviewStage", reviewStage);
 
         return find(query, params).firstResultOptional();

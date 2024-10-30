@@ -4,9 +4,11 @@ import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.base.model.CompetencyGroup;
+import org.base.model.CompetencyGroupComment;
 import org.base.model.CompetencyGroupCommentHigher;
 import org.base.model.Evaluation;
 import org.base.model.enums.EmployeeType;
+import org.base.model.enums.ReviewStage;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +20,15 @@ public class CompetencyGroupCommentHigherRepository implements PanacheRepository
 
     public Optional<CompetencyGroupCommentHigher> findByCompetencyGroupCommentHigherId(Long competencyGroupCommentHigherId) {
         return find("competencyGroupCommentHigherId", competencyGroupCommentHigherId).firstResultOptional();
+    }
+
+    public Optional<CompetencyGroupCommentHigher> findByIdAndReviewStageOptional(Long competencyGroupCommentHigherId, ReviewStage reviewStage) {
+        String query = "competencyGroupCommentHigherId = :competencyGroupCommentHigherId and reviewStage = :reviewStage";
+        Map<String, Object> params = new HashMap<>();
+        params.put("competencyGroupCommentHigherId", competencyGroupCommentHigherId);
+        params.put("reviewStage", reviewStage);
+
+        return find(query, params).firstResultOptional();
     }
 
     public List<CompetencyGroupCommentHigher> findByOptionalFilters(EmployeeType employeeType, CompetencyGroup competencyGroup, Evaluation evaluation, Long employeeId) {

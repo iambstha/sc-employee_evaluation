@@ -166,7 +166,7 @@ public class CompetencyGroupCommentServiceImpl implements CompetencyGroupComment
     public CompetencyGroupCommentResDto updateByIdAndReviewStage(Long id, CompetencyGroupCommentReqDto competencyGroupCommentReqDto, ReviewStage reviewStage) {
         try {
             if(reviewStage == ReviewStage.PRE_YEAR) {
-                CompetencyGroupComment existingCompetenceGroupComment = competencyGroupCommentRepository.findByIdOptional(id)
+                CompetencyGroupComment existingCompetenceGroupComment = competencyGroupCommentRepository.findByIdAndReviewStageOptional(id, reviewStage)
                         .orElseThrow(() -> new ResourceNotFoundException("Comment with ID " + id + " and review stage " + reviewStage + " not found."));
 
                 competencyGroupCommentMapper.updateEntityFromDto(competencyGroupCommentReqDto, existingCompetenceGroupComment);
@@ -176,7 +176,7 @@ public class CompetencyGroupCommentServiceImpl implements CompetencyGroupComment
 
                 return competencyGroupCommentMapper.toResDto(existingCompetenceGroupComment);
             }else{
-                CompetencyGroupCommentHigher existingCompetenceGroupCommentHigher = competencyGroupCommentHigherRepository.findByIdOptional(id)
+                CompetencyGroupCommentHigher existingCompetenceGroupCommentHigher = competencyGroupCommentHigherRepository.findByIdAndReviewStageOptional(id, reviewStage)
                         .orElseThrow(() -> new ResourceNotFoundException("Comment with ID " + id + " and review stage " + reviewStage + " not found."));
 
                 competencyGroupCommentHigherMapper.updateEntityFromDto(competencyGroupCommentReqDto, existingCompetenceGroupCommentHigher);
