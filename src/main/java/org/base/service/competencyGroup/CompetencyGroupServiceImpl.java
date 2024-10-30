@@ -54,6 +54,9 @@ public class CompetencyGroupServiceImpl implements CompetencyGroupService {
     @Override
     public List<CompetencyGroupResDto> getPaginated(int page, int size) {
         try {
+            page = Math.max(page, 0);
+            size = Math.max(size, 0);
+
             return  competencyGroupRepository.findAll()
                     .page(page, size)
                     .list()
@@ -106,8 +109,10 @@ public class CompetencyGroupServiceImpl implements CompetencyGroupService {
         try {
             getById(id);
             competencyGroupRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Competency group with ID " + id + " could not be deleted: " + e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException(e.getMessage());
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
         }
     }
 

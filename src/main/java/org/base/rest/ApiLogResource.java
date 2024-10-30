@@ -15,6 +15,7 @@ import org.base.domain.ApiResponse;
 import org.base.dto.ApiLogResDto;
 import org.base.dto.PaginationMetadata;
 import org.base.service.apiLog.ApiLogService;
+import org.base.util.GeneralUtil;
 
 import java.util.List;
 
@@ -37,14 +38,9 @@ public class ApiLogResource {
             @QueryParam("page") int page,
             @QueryParam("size") int size) {
 
-        page = (page < 1) ? 0 : page;
-        size = (size < 0) ? 0 : size;
-        long totalCount = service.countTotal();
-        int totalPages = (int) Math.ceil((double) totalCount / size);
-
         ApiResponse apiResponse = ApiResponse.builder()
                 .data(service.getPaginated(page, size))
-                .metadata(new PaginationMetadata(page, size, totalPages, totalCount))
+                .metadata(new PaginationMetadata(page, size, GeneralUtil.countTotalPages(service.countTotal(), size), service.countTotal()))
                 .message(messageSource.getMessage("fetch.success"))
                 .build();
 

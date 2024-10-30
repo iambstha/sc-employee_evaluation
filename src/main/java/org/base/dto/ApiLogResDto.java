@@ -3,6 +3,7 @@ package org.base.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class ApiLogResDto {
@@ -13,10 +14,10 @@ public class ApiLogResDto {
     private String parameters;
     private String username;
     private LocalDateTime timestamp;
-    private String repositoryAccessed;
+    private List<String> repositoryAccessed;
     private String requestBody;
     private String responseBody;
-    private String statusCode;
+    private int statusCode;
     private String userAgent;
     private String userIp;
     private String referer;

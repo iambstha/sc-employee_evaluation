@@ -2,6 +2,7 @@ package org.base.service.competencyGroupComment;
 
 import org.base.dto.CompetencyGroupCommentReqDto;
 import org.base.dto.CompetencyGroupCommentResDto;
+import org.base.dto.PaginationMetadata;
 import org.base.model.enums.EmployeeType;
 import org.base.model.enums.ReviewStage;
 

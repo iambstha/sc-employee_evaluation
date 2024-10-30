@@ -12,4 +12,5 @@ public class PaginationMetadata {
     private int pageSize;
     private int totalPages;
     private long totalItems;
+
 }

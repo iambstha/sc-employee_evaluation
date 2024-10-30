@@ -33,6 +33,9 @@ public class Evaluation extends BaseEntity {
     @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CompetencyGroupComment> competencyGroupComments;
 
+    @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CompetencyGroupCommentHigher> competencyGroupCommentHighers;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "review_stage")
     @NotNull

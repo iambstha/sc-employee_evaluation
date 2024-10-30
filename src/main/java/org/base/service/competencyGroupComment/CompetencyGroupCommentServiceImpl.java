@@ -92,6 +92,8 @@ public class CompetencyGroupCommentServiceImpl implements CompetencyGroupComment
     @Override
     public List<CompetencyGroupCommentResDto> getPaginated(int page, int size) {
         try {
+            page = Math.max(page, 0);
+            size = Math.max(size, 0);
 
             List<CompetencyGroupComment> competencyGroupComments = competencyGroupCommentRepository
                     .findAll()
@@ -204,8 +206,10 @@ public class CompetencyGroupCommentServiceImpl implements CompetencyGroupComment
         try {
             getByIdAndReviewStage(id, reviewStage);
             competencyGroupCommentRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Comment with ID " + id + " and review stage " + reviewStage + " could not be deleted: " + e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException(e.getMessage());
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
         }
     }
 

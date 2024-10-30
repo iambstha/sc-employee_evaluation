@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.base.domain.BaseEntity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -38,7 +39,7 @@ public class ApiLog extends BaseEntity {
     private LocalDateTime timestamp;
 
     @Column(name = "repository_accessed")
-    private String repositoryAccessed;
+    private List<String> repositoryAccessed;
 
     @Lob
     @Column(columnDefinition = "TEXT", name = "request_body")
@@ -50,7 +51,7 @@ public class ApiLog extends BaseEntity {
     private String responseBody;
 
     @Column(name = "status_code")
-    private String statusCode;
+    private int statusCode;
 
     @Column(name = "user_agent")
     private String userAgent;

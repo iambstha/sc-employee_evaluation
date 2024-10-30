@@ -52,6 +52,9 @@ public class CompetencyServiceImpl implements CompetencyService {
     @Override
     public List<CompetencyResDto> getPaginated(int page, int size) {
         try {
+            page = Math.max(page, 0);
+            size = Math.max(size, 0);
+
             return  competencyRepository.findAll()
                     .page(page, size)
                     .list()
@@ -98,8 +101,10 @@ public class CompetencyServiceImpl implements CompetencyService {
         try {
             getById(id);
             competencyRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Competency with ID " + id + " could not be deleted: " + e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException(e.getMessage());
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
         }
     }
 

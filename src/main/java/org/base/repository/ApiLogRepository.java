@@ -5,9 +5,11 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import org.base.aop.RepositoryAccess;
 import org.base.model.ApiLog;
 
 @ApplicationScoped
+@RepositoryAccess
 public class ApiLogRepository implements PanacheRepositoryBase<ApiLog, Long> {
 
     @Inject

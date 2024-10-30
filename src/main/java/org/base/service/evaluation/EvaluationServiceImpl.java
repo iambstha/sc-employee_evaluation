@@ -14,10 +14,7 @@ import org.base.model.*;
 import org.base.model.enums.ApprovalStage;
 import org.base.model.enums.EvaluationByType;
 import org.base.model.enums.ReviewStage;
-import org.base.repository.CompetencyEvaluationRepository;
-import org.base.repository.CompetencyRepository;
-import org.base.repository.EvaluationRepository;
-import org.base.repository.ScoreRepository;
+import org.base.repository.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,11 +34,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     ScoreRepository scoreRepository;
 
     @Inject
-    CompetencyEvaluationRepository competencyEvaluationRepository;
-
-    @Inject
     EvaluationMapper evaluationMapper;
-
 
     @Override
     public EvaluationResDto save(EvaluationReqDto evaluationReqDto) {
@@ -97,6 +90,9 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Override
     public List<EvaluationResDto> getPaginated(int page, int size) {
         try {
+            page = Math.max(page, 0);
+            size = Math.max(size, 0);
+
             return evaluationRepository.findAll()
                     .page(page, size)
                     .list()
@@ -111,7 +107,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Override
     public EvaluationResDto getById(Long id) {
         Evaluation evaluation = evaluationRepository.findByIdOptional(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Competency evaluation with ID " + id + " not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Evaluation with ID " + id + " not found."));
 
         return evaluationMapper.toResDto(evaluation);
     }
@@ -190,13 +186,11 @@ public class EvaluationServiceImpl implements EvaluationService {
     public void deleteById(Long id) {
         try {
             getById(id);
-            Evaluation evaluation = evaluationRepository.findById(id);
-            for (CompetencyEvaluation competencyEvaluation : evaluation.getCompetencyEvaluations()) {
-                competencyEvaluationRepository.delete(competencyEvaluation);
-            }
             evaluationRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new ResourceNotFoundException("Competency evaluation with ID " + id + " could not be deleted: " + e.getMessage());
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException(e.getMessage());
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
         }
     }
 

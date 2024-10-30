@@ -43,4 +43,8 @@ public class GeneralUtil {
         return ipAddress;
     }
 
+    public static int countTotalPages(long countTotal, int size) {
+        return (int) Math.ceil((double) countTotal / size);
+    }
+
 }

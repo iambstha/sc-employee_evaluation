@@ -3,6 +3,7 @@ package org.base.repository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.base.aop.RepositoryAccess;
 import org.base.model.Evaluation;
 import org.base.model.enums.EvaluationByType;
 import org.base.model.enums.ReviewStage;
@@ -10,10 +11,15 @@ import org.base.model.enums.ReviewStage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @ApplicationScoped
+@RepositoryAccess
 public class EvaluationRepository implements PanacheRepositoryBase<Evaluation, Long> {
 
+    public Optional<Evaluation> findByEvaluationId(Long evaluationId) {
+        return find("evaluationId", evaluationId).firstResultOptional();
+    }
 
     public List<Evaluation> findByOptionalFilters(EvaluationByType evaluationByType, ReviewStage reviewStage, Long employeeId) {
 

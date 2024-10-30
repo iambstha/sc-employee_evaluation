@@ -7,6 +7,7 @@ import jakarta.interceptor.Interceptor;
 import jakarta.interceptor.InvocationContext;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Response;
 import org.base.domain.CustomObjectMapper;
 import org.base.model.ApiLog;
 import org.base.repository.ApiLogRepository;
@@ -19,6 +20,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Loggable
@@ -62,8 +64,11 @@ public class LoggingInterceptor {
         logger.info("Request to {} with parameters: {}", endpoint, parameters);
 
         Object result;
+
+        Response response = null;
         String responseBody = "";
         String requestBody = "";
+        int statusCode = 0;
 
         try {
 
@@ -72,12 +77,21 @@ public class LoggingInterceptor {
             if (result != null) {
                 responseBody = customObjectMapper.writeValueAsString(result);
             }
+
+            response = (Response) result;
+            if (response != null) {
+                statusCode = response.getStatus();
+                responseBody = customObjectMapper.writeValueAsString(response.getEntity());
+            }
+
         } catch (Exception e) {
             logger.error("Error in method {}: {}", methodName, e.getMessage());
             throw e;
         } finally {
             LocalDateTime endTime = LocalDateTime.now();
             long executionTime = java.time.Duration.between(startTime, endTime).toMillis();
+
+            List<String> accessedRepositories = RepositoryAccessTracker.getAccessedRepositories();
 
             ApiLog apiLog = new ApiLog();
             apiLog.setEndpoint(endpoint);
@@ -90,12 +104,20 @@ public class LoggingInterceptor {
             apiLog.setUserIp(userIp);
             apiLog.setReferer(referer);
             apiLog.setRequestBody(requestBody);
-            apiLog.setResponseBody(responseBody);
+            if(statusCode == 0){
+                apiLog.setResponseBody("Some error occurred.");
+            }else {
+                apiLog.setResponseBody(responseBody);
+            }
+            apiLog.setStatusCode(statusCode);
             apiLog.setCorrelationId(correlationId);
             apiLog.setTimestamp(startTime);
+            apiLog.setRepositoryAccessed(accessedRepositories);
 
             apiLogRepository.save(apiLog);
             logger.info("Execution time for {}: {} ms", methodName, executionTime);
+
+            RepositoryAccessTracker.clear();
         }
 
         return result;

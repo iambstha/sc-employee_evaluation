@@ -15,6 +15,7 @@ import org.base.model.enums.ApprovalStage;
 import org.base.model.enums.EvaluationByType;
 import org.base.model.enums.ReviewStage;
 import org.base.service.evaluation.EvaluationService;
+import org.base.util.GeneralUtil;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
 @Slf4j
@@ -49,14 +50,9 @@ public class EvaluationResource {
             @QueryParam("page") int page,
             @QueryParam("size") int size) {
 
-        page = (page < 1) ? 0 : page;
-        size = (size < 0) ? 0 : size;
-        long totalCount = service.countTotal();
-        int totalPages = (int) Math.ceil((double) totalCount / size);
-
         ApiResponse apiResponse = ApiResponse.builder()
                 .data(service.getPaginated(page, size))
-                .metadata(new PaginationMetadata(page, size, totalPages, totalCount))
+                .metadata(new PaginationMetadata(page, size, GeneralUtil.countTotalPages(service.countTotal(), size), service.countTotal()))
                 .message(messageSource.getMessage("fetch.success"))
                 .build();
 
