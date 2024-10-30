@@ -19,6 +19,15 @@ public class MessageSourceProducer {
         return messageSource;
     }
 
+
+    @Produces
+    @Named("apiLogMessageSource")
+    public MessageSource apiLogMessageSource() {
+        MessageSource messageSource = new MessageSource();
+        messageSource.loadControllerMessages("apiLog", "en");
+        return messageSource;
+    }
+
     @Produces
     @Named("clientMessageSource")
     public MessageSource clientMessageSource() {

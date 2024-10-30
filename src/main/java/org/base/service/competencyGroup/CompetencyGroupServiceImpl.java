@@ -3,10 +3,10 @@ package org.base.service.competencyGroup;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.base.dto.CompetencyGroupReqDto;
 import org.base.dto.CompetencyGroupResDto;
+import org.base.exception.BadRequestException;
 import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.CompetencyGroupMapper;
@@ -59,7 +59,7 @@ public class CompetencyGroupServiceImpl implements CompetencyGroupService {
                     .map(competencyGroupMapper::toResDto)
                     .toList();
         } catch (Exception e){
-            throw new BadRequestException("Error occurred while fetching competency group: " + e.getMessage(), e);
+            throw new BadRequestException("Error occurred while fetching competency group: " + e.getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ public class CompetencyGroupServiceImpl implements CompetencyGroupService {
 
             return competencyGroups.stream().map(competencyGroupMapper::toResDto).toList();
         }catch (Exception e){
-            throw new BadRequestException("Error occurred while fetching competency group: " + e.getMessage(), e);
+            throw new BadRequestException("Error occurred while fetching competency group: " + e.getMessage());
         }
     }
 

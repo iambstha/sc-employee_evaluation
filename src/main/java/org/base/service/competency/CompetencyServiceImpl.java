@@ -3,9 +3,9 @@ package org.base.service.competency;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.BadRequestException;
 import org.base.dto.CompetencyReqDto;
 import org.base.dto.CompetencyResDto;
+import org.base.exception.BadRequestException;
 import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.CompetencyMapper;
@@ -57,7 +57,7 @@ public class CompetencyServiceImpl implements CompetencyService {
                     .map(competencyMapper::toResDto)
                     .toList();
         } catch (Exception e){
-            throw new BadRequestException("Error occurred while fetching competencies: " + e.getMessage(), e);
+            throw new BadRequestException("Error occurred while fetching competencies: " + e.getMessage());
         }
     }
 

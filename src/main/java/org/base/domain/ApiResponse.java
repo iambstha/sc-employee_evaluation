@@ -13,12 +13,14 @@ public class ApiResponse {
     private int statusCode;
     private String message;
     private Object data;
+    private Object metadata;
 
     public ApiResponse() {
         this.status = Response.Status.OK.getReasonPhrase();
         this.statusCode = Response.Status.OK.getStatusCode();
         this.message = "";
         this.data = null;
+        this.metadata = null;
     }
 
     public static ApiResponseBuilder builder() {

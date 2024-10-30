@@ -4,7 +4,6 @@ import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.base.model.CompetencyGroup;
-import org.base.model.CompetencyGroupComment;
 import org.base.model.CompetencyGroupCommentHigher;
 import org.base.model.Evaluation;
 import org.base.model.enums.EmployeeType;
