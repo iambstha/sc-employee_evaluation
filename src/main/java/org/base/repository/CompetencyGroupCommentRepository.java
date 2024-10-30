@@ -7,6 +7,7 @@ import org.base.model.CompetencyGroup;
 import org.base.model.CompetencyGroupComment;
 import org.base.model.Evaluation;
 import org.base.model.enums.EmployeeType;
+import org.base.model.enums.ReviewStage;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,16 @@ public class CompetencyGroupCommentRepository implements PanacheRepositoryBase<C
     public Optional<CompetencyGroupComment> findByCompetencyGroupCommentId(Long competencyGroupCommentId) {
         return find("competencyGroupCommentId", competencyGroupCommentId).firstResultOptional();
     }
+
+    public Optional<CompetencyGroupComment> findByIdAndReviewStageOptional(Long id, ReviewStage reviewStage) {
+        String query = "competencyGroupCommentId = :id and reviewStage = :reviewStage";
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        params.put("reviewStage", reviewStage);
+
+        return find(query, params).firstResultOptional();
+    }
+
 
     public List<CompetencyGroupComment> findByEmployeeType(EmployeeType employeeType) {
         return find("employeeType", employeeType).stream().toList();

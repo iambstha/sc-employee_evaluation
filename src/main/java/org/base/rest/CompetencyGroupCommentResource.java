@@ -11,6 +11,7 @@ import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
 import org.base.dto.CompetencyGroupCommentReqDto;
 import org.base.model.enums.EmployeeType;
+import org.base.model.enums.ReviewStage;
 import org.base.service.competencyGroupComment.CompetencyGroupCommentService;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
@@ -55,9 +56,9 @@ public class CompetencyGroupCommentResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Loggable
-    public Response getById(@PathParam("id") Long id) {
+    public Response getByIdAndReviewStage(@PathParam("id") Long id, @QueryParam("reviewStage") ReviewStage reviewStage) {
         ApiResponse apiResponse = ApiResponse.builder()
-                .data(service.getById(id))
+                .data(service.getByIdAndReviewStage(id, reviewStage))
                 .message(messageSource.getMessage("fetch.success"))
                 .build();
 
@@ -87,9 +88,12 @@ public class CompetencyGroupCommentResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Loggable
-    public Response updateById(@PathParam("id") Long id, @RequestBody CompetencyGroupCommentReqDto competencyGroupCommentReqDto) {
+    public Response updateByIdAndReviewStage(
+            @PathParam("id") Long id,
+            @RequestBody CompetencyGroupCommentReqDto competencyGroupCommentReqDto,
+            @QueryParam("reviewStage") ReviewStage reviewStage) {
         ApiResponse apiResponse = ApiResponse.builder()
-                .data(service.updateById(id, competencyGroupCommentReqDto))
+                .data(service.updateByIdAndReviewStage(id, competencyGroupCommentReqDto, reviewStage))
                 .message(messageSource.getMessage("update.success"))
                 .build();
 
@@ -100,8 +104,8 @@ public class CompetencyGroupCommentResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Loggable
-    public Response deleteById(@PathParam("id") Long id) {
-        service.deleteById(id);
+    public Response deleteByIdAndReviewStage(@PathParam("id") Long id, @QueryParam("reviewStage") ReviewStage reviewStage) {
+        service.deleteByIdAndReviewStage(id, reviewStage);
         ApiResponse apiResponse = ApiResponse.builder()
                 .message(messageSource.getMessage("delete.success"))
                 .build();
