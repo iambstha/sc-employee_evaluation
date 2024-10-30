@@ -12,7 +12,7 @@ public interface CompetencyGroupCommentService {
 
     CompetencyGroupCommentResDto save(CompetencyGroupCommentReqDto competencyGroupCommentReqDto);
 
-    List<CompetencyGroupCommentResDto> getAll();
+    List<CompetencyGroupCommentResDto> getPaginated(int page, int size);
 
     CompetencyGroupCommentResDto getByIdAndReviewStage(Long id, ReviewStage reviewStage);
 
@@ -21,4 +21,7 @@ public interface CompetencyGroupCommentService {
     CompetencyGroupCommentResDto updateByIdAndReviewStage(Long id, CompetencyGroupCommentReqDto competencyGroupCommentReqDto, ReviewStage reviewStage);
 
     void deleteByIdAndReviewStage(Long id, ReviewStage reviewStage);
+
+    long countTotal();
+
 }

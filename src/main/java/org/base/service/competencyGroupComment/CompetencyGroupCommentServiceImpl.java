@@ -90,11 +90,17 @@ public class CompetencyGroupCommentServiceImpl implements CompetencyGroupComment
     }
 
     @Override
-    public List<CompetencyGroupCommentResDto> getAll() {
+    public List<CompetencyGroupCommentResDto> getPaginated(int page, int size) {
         try {
 
-            List<CompetencyGroupComment> competencyGroupComments = competencyGroupCommentRepository.listAll();
-            List<CompetencyGroupCommentHigher> competencyGroupCommentHighers = competencyGroupCommentHigherRepository.listAll();
+            List<CompetencyGroupComment> competencyGroupComments = competencyGroupCommentRepository
+                    .findAll()
+                    .page(page, size)
+                    .list();
+            List<CompetencyGroupCommentHigher> competencyGroupCommentHighers = competencyGroupCommentHigherRepository
+                    .findAll()
+                    .page(page, size)
+                    .list();
 
             List<CompetencyGroupCommentResDto> competencyGroupCommentResDtos = new ArrayList<>(competencyGroupComments
                     .stream()
@@ -202,4 +208,9 @@ public class CompetencyGroupCommentServiceImpl implements CompetencyGroupComment
             throw new ResourceNotFoundException("Comment with ID " + id + " and review stage " + reviewStage + " could not be deleted: " + e.getMessage());
         }
     }
+
+    public long countTotal() {
+        return competencyGroupCommentRepository.count();
+    }
+
 }

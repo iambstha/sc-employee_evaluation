@@ -95,9 +95,11 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 
     @Override
-    public List<EvaluationResDto> getAll() {
+    public List<EvaluationResDto> getPaginated(int page, int size) {
         try {
-            return evaluationRepository.listAll()
+            return evaluationRepository.findAll()
+                    .page(page, size)
+                    .list()
                     .stream()
                     .map(evaluationMapper::toResDto)
                     .toList();
@@ -197,4 +199,9 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new ResourceNotFoundException("Competency evaluation with ID " + id + " could not be deleted: " + e.getMessage());
         }
     }
+
+    public long countTotal() {
+        return evaluationRepository.count();
+    }
+
 }

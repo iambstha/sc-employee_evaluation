@@ -12,7 +12,7 @@ public interface EvaluationService {
 
     EvaluationResDto save(EvaluationReqDto evaluationReqDto);
 
-    List<EvaluationResDto> getAll();
+    List<EvaluationResDto> getPaginated(int page, int size);
 
     EvaluationResDto getById(Long id);
 
@@ -23,5 +23,7 @@ public interface EvaluationService {
     EvaluationResDto updateReviewStage(Long id, ReviewStage reviewStage, ApprovalStage approvalStage);
 
     void deleteById(Long id);
+
+    long countTotal();
 
 }

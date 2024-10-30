@@ -10,6 +10,7 @@ import org.base.aop.Loggable;
 import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
 import org.base.dto.CompetencyReqDto;
+import org.base.dto.PaginationMetadata;
 import org.base.service.competency.CompetencyService;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 
@@ -41,9 +42,18 @@ public class CompetencyResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Loggable
-    public Response getAll() {
+    public Response getAll(
+            @QueryParam("page") int page,
+            @QueryParam("size") int size) {
+
+        page = (page < 1) ? 0 : page;
+        size = (size < 0) ? 0 : size;
+        long totalCount = service.countTotal();
+        int totalPages = (int) Math.ceil((double) totalCount / size);
+
         ApiResponse apiResponse = ApiResponse.builder()
-                .data(service.getAll())
+                .data(service.getPaginated(page, size))
+                .metadata(new PaginationMetadata(page, size, totalPages, totalCount))
                 .message(messageSource.getMessage("fetch.success"))
                 .build();
 

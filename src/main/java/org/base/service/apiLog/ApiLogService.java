@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ApiLogService {
 
-    List<ApiLogResDto> getPaginated(int i, int size);
+    List<ApiLogResDto> getPaginated(int page, int size);
 
     long countTotal();
 }

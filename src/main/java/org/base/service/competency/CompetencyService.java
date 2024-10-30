@@ -9,7 +9,7 @@ public interface CompetencyService {
 
     CompetencyResDto save(CompetencyReqDto competencyReqDto);
 
-    List<CompetencyResDto> getAll();
+    List<CompetencyResDto> getPaginated(int page, int size);
 
     CompetencyResDto getById(Long id);
 
@@ -17,4 +17,5 @@ public interface CompetencyService {
 
     void deleteById(Long id);
 
+    long countTotal();
 }

@@ -9,12 +9,14 @@ public interface CompetencyEvaluationService {
 
     CompetencyEvaluationResDto save(CompetencyEvaluationReqDto competencyEvaluationReqDto);
 
-    List<CompetencyEvaluationResDto> getAll();
+    List<CompetencyEvaluationResDto> getPaginated(int page, int size);
 
     CompetencyEvaluationResDto getById(Long id);
 
     CompetencyEvaluationResDto updateById(Long id, CompetencyEvaluationReqDto competencyEvaluationReqDto);
 
     void deleteById(Long id);
+
+    long countTotal();
 
 }

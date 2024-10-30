@@ -87,9 +87,11 @@ public class CompetencyEvaluationServiceImpl implements CompetencyEvaluationServ
     }
 
     @Override
-    public List<CompetencyEvaluationResDto> getAll() {
+    public List<CompetencyEvaluationResDto> getPaginated(int page, int size) {
         try {
-            return  competencyEvaluationRepository.listAll()
+            return  competencyEvaluationRepository.findAll()
+                    .page(page, size)
+                    .list()
                     .stream()
                     .map(competencyEvaluationMapper::toResDto)
                     .toList();
@@ -154,4 +156,9 @@ public class CompetencyEvaluationServiceImpl implements CompetencyEvaluationServ
             throw new ResourceNotFoundException("Competency evaluation with ID " + id + " could not be deleted: " + e.getMessage());
         }
     }
+
+    public long countTotal() {
+        return competencyEvaluationRepository.count();
+    }
+
 }

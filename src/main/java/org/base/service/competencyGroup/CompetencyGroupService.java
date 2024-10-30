@@ -11,7 +11,7 @@ public interface CompetencyGroupService {
 
     CompetencyGroupResDto save(CompetencyGroupReqDto competencyGroupReqDto);
 
-    List<CompetencyGroupResDto> getAll();
+    List<CompetencyGroupResDto> getPaginated(int page, int size);
 
     CompetencyGroupResDto getById(Long id);
 
@@ -20,5 +20,7 @@ public interface CompetencyGroupService {
     CompetencyGroupResDto updateById(Long id, CompetencyGroupReqDto competencyGroupReqDto);
 
     void deleteById(Long id);
+
+    long countTotal();
 
 }

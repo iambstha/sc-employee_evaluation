@@ -50,9 +50,11 @@ public class CompetencyServiceImpl implements CompetencyService {
     }
 
     @Override
-    public List<CompetencyResDto> getAll() {
+    public List<CompetencyResDto> getPaginated(int page, int size) {
         try {
-            return  competencyRepository.listAll()
+            return  competencyRepository.findAll()
+                    .page(page, size)
+                    .list()
                     .stream()
                     .map(competencyMapper::toResDto)
                     .toList();
@@ -100,4 +102,9 @@ public class CompetencyServiceImpl implements CompetencyService {
             throw new ResourceNotFoundException("Competency with ID " + id + " could not be deleted: " + e.getMessage());
         }
     }
+
+    public long countTotal() {
+        return competencyRepository.count();
+    }
+
 }

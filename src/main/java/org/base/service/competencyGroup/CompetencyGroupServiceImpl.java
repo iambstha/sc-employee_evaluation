@@ -52,9 +52,11 @@ public class CompetencyGroupServiceImpl implements CompetencyGroupService {
     }
 
     @Override
-    public List<CompetencyGroupResDto> getAll() {
+    public List<CompetencyGroupResDto> getPaginated(int page, int size) {
         try {
-            return  competencyGroupRepository.listAll()
+            return  competencyGroupRepository.findAll()
+                    .page(page, size)
+                    .list()
                     .stream()
                     .map(competencyGroupMapper::toResDto)
                     .toList();
@@ -108,4 +110,9 @@ public class CompetencyGroupServiceImpl implements CompetencyGroupService {
             throw new ResourceNotFoundException("Competency group with ID " + id + " could not be deleted: " + e.getMessage());
         }
     }
+
+    public long countTotal() {
+        return competencyGroupRepository.count();
+    }
+
 }
