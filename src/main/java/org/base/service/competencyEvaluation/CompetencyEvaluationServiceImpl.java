@@ -17,6 +17,7 @@ import org.base.model.Competency;
 import org.base.model.CompetencyEvaluation;
 import org.base.model.Evaluation;
 import org.base.model.Score;
+import org.base.model.enums.ReviewStage;
 import org.base.repository.CompetencyEvaluationRepository;
 import org.base.repository.CompetencyRepository;
 import org.base.repository.EvaluationRepository;
@@ -73,6 +74,9 @@ public class CompetencyEvaluationServiceImpl implements CompetencyEvaluationServ
             Evaluation existingEvaluation = evaluationRepository.findById(competencyEvaluationReqDto.getEvaluationId());
             if(existingEvaluation != null) {
                 competencyEvaluation.setEvaluation(existingEvaluation);
+                if(existingEvaluation.getReviewStage() != ReviewStage.MID_YEAR && existingEvaluation.getReviewStage() != ReviewStage.POST_YEAR){
+                    throw new BadRequestException("Cannot add rating during pre year stage.");
+                }
             }else{
                 throw new ResourceAlreadyExistsException("Evaluation with id " + competencyEvaluationReqDto.getEvaluationId() + " not found.");
             }
@@ -81,12 +85,14 @@ public class CompetencyEvaluationServiceImpl implements CompetencyEvaluationServ
                 Score score = scoreMapper.toEntity(competencyEvaluationReqDto.getScore());
                 scoreRepository.persist(score);
             }
-            competencyEvaluation.setCreatedBy(null);
-            competencyEvaluationRepository.persist(competencyEvaluation);
-            return competencyEvaluationMapper.toResDto(competencyEvaluation);
-        } catch (BadRequestException e) {
+                competencyEvaluation.setCreatedBy(null);
+                competencyEvaluationRepository.persist(competencyEvaluation);
+                return competencyEvaluationMapper.toResDto(competencyEvaluation);
+            } catch (BadRequestException e) {
             throw new BadRequestException(e.getMessage());
-        }
+            } catch (ResourceAlreadyExistsException e) {
+                throw new ResourceAlreadyExistsException(e.getMessage());
+            }
     }
 
     @Override
