@@ -11,7 +11,7 @@ public interface CompetencyGroupService {
 
     CompetencyGroupResDto save(CompetencyGroupReqDto competencyGroupReqDto);
 
-    List<CompetencyGroupResDto> getPaginated(int page, int size);
+    List<CompetencyGroupResDto> getPaginated(int page, int size, String sortDirection, String sortColumn);
 
     CompetencyGroupResDto getById(Long id);
 

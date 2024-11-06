@@ -9,7 +9,7 @@ public interface CompetencyService {
 
     CompetencyResDto save(CompetencyReqDto competencyReqDto);
 
-    List<CompetencyResDto> getPaginated(int page, int size);
+    List<CompetencyResDto> getPaginated(int page, int size, String sortDirection, String sortColumn);
 
     CompetencyResDto getById(Long id);
 

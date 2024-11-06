@@ -1,11 +1,15 @@
 package org.base.service.competency;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.base.dto.CompetencyReqDto;
 import org.base.dto.CompetencyResDto;
 import org.base.exception.BadRequestException;
+import org.base.exception.IllegalArgumentException;
 import org.base.exception.ResourceAlreadyExistsException;
 import org.base.exception.ResourceNotFoundException;
 import org.base.mapper.CompetencyMapper;
@@ -26,6 +30,7 @@ public class CompetencyServiceImpl implements CompetencyService {
     @Inject
     CompetencyMapper competencyMapper;
 
+    private static final List<String> ALLOWED_SORT_COLUMNS = List.of("competencyId", "competencyGroup", "name");
 
     @Override
     public CompetencyResDto save(CompetencyReqDto competencyReqDto) {
@@ -50,17 +55,27 @@ public class CompetencyServiceImpl implements CompetencyService {
     }
 
     @Override
-    public List<CompetencyResDto> getPaginated(int page, int size) {
+    public List<CompetencyResDto> getPaginated(int page, int size, String sortDirection, String sortColumn) {
         try {
             page = Math.max(page, 0);
             size = Math.max(size, 0);
 
-            return  competencyRepository.findAll()
-                    .page(page, size)
+            String direction = (sortDirection != null && sortDirection.equalsIgnoreCase("desc")) ? "Descending" : "Ascending";
+            String sortBy = (sortColumn != null && !sortColumn.isEmpty()) ? sortColumn : ALLOWED_SORT_COLUMNS.getFirst();
+
+            if (!ALLOWED_SORT_COLUMNS.contains(sortBy)) {
+                throw new BadRequestException("Invalid sort column: " + sortBy);
+            }
+
+            return  competencyRepository
+                    .findAll(Sort.by(sortBy, Sort.Direction.valueOf(direction)))
+                    .page(Page.of(page, size))
                     .list()
                     .stream()
                     .map(competencyMapper::toResDto)
                     .toList();
+        } catch (IllegalArgumentException e){
+            throw new IllegalArgumentException("Invalid sort direction: " + sortDirection);
         } catch (Exception e){
             throw new BadRequestException("Error occurred while fetching competencies: " + e.getMessage());
         }

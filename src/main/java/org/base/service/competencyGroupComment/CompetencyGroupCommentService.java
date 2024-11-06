@@ -13,7 +13,7 @@ public interface CompetencyGroupCommentService {
 
     CompetencyGroupCommentResDto save(CompetencyGroupCommentReqDto competencyGroupCommentReqDto);
 
-    List<CompetencyGroupCommentResDto> getPaginated(int page, int size);
+    List<CompetencyGroupCommentResDto> getPaginated(int page, int size, String sortDirection, String sortColumn);
 
     CompetencyGroupCommentResDto getByIdAndReviewStage(Long id, ReviewStage reviewStage);
 

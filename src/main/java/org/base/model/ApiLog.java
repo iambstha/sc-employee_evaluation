@@ -20,7 +20,7 @@ public class ApiLog extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long apiLogId;
 
     @Column(name = "endpoint")
     private String endpoint;
@@ -44,7 +44,6 @@ public class ApiLog extends BaseEntity {
     @Lob
     @Column(columnDefinition = "TEXT", name = "request_body")
     private String requestBody;
-
 
     @Lob
     @Column(columnDefinition = "TEXT", name = "response_body")

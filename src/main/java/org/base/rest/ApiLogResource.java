@@ -2,10 +2,7 @@ package org.base.rest;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +29,13 @@ public class ApiLogResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Loggable
     public Response getPaginated(
-            @QueryParam("page") int page,
-            @QueryParam("size") int size) {
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("size") @DefaultValue("10") int size,
+            @QueryParam("sortDirection") @DefaultValue("ASC") String sortDirection,
+            @QueryParam("sortColumn") @DefaultValue("apiLogId") String sortColumn) {
 
         ApiResponse apiResponse = ApiResponse.builder()
-                .data(service.getPaginated(page, size))
+                .data(service.getPaginated(page, size, sortDirection, sortColumn))
                 .metadata(new PaginationMetadata(page, size, GeneralUtil.countTotalPages(service.countTotal(), size), service.countTotal()))
                 .message(messageSource.getMessage("fetch.success"))
                 .build();

@@ -12,7 +12,7 @@ public interface EvaluationService {
 
     EvaluationResDto save(EvaluationReqDto evaluationReqDto);
 
-    List<EvaluationResDto> getPaginated(int page, int size);
+    List<EvaluationResDto> getPaginated(int page, int size, String sortDirection, String sortColumn);
 
     EvaluationResDto getById(Long id);
 

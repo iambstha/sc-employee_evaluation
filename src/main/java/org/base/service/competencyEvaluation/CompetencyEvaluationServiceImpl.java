@@ -1,5 +1,7 @@
 package org.base.service.competencyEvaluation;
 
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -46,6 +48,7 @@ public class CompetencyEvaluationServiceImpl implements CompetencyEvaluationServ
     @Inject
     CompetencyEvaluationMapper competencyEvaluationMapper;
 
+    private static final List<String> ALLOWED_SORT_COLUMNS = List.of("competencyEvaluationId");
 
     @Override
     public CompetencyEvaluationResDto save(CompetencyEvaluationReqDto competencyEvaluationReqDto) {
@@ -87,13 +90,21 @@ public class CompetencyEvaluationServiceImpl implements CompetencyEvaluationServ
     }
 
     @Override
-    public List<CompetencyEvaluationResDto> getPaginated(int page, int size) {
+    public List<CompetencyEvaluationResDto> getPaginated(int page, int size, String sortDirection, String sortColumn) {
         try {
             page = Math.max(page, 0);
             size = Math.max(size, 0);
 
-            return  competencyEvaluationRepository.findAll()
-                    .page(page, size)
+            String direction = (sortDirection != null && sortDirection.equalsIgnoreCase("desc")) ? "Descending" : "Ascending";
+            String sortBy = (sortColumn != null && !sortColumn.isEmpty()) ? sortColumn : ALLOWED_SORT_COLUMNS.getFirst();
+
+            if (!ALLOWED_SORT_COLUMNS.contains(sortBy)) {
+                throw new BadRequestException("Invalid sort column: " + sortBy);
+            }
+
+            return  competencyEvaluationRepository
+                    .findAll(Sort.by(sortBy, Sort.Direction.valueOf(direction)))
+                    .page(Page.of(page, size))
                     .list()
                     .stream()
                     .map(competencyEvaluationMapper::toResDto)

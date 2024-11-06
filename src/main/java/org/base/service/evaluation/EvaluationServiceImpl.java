@@ -1,5 +1,7 @@
 package org.base.service.evaluation;
 
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -35,6 +37,8 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Inject
     EvaluationMapper evaluationMapper;
+
+    private static final List<String> ALLOWED_SORT_COLUMNS = List.of("evaluationId", "periodFrom");
 
     @Override
     public EvaluationResDto save(EvaluationReqDto evaluationReqDto) {
@@ -88,13 +92,21 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 
     @Override
-    public List<EvaluationResDto> getPaginated(int page, int size) {
+    public List<EvaluationResDto> getPaginated(int page, int size, String sortDirection, String sortColumn) {
         try {
             page = Math.max(page, 0);
             size = Math.max(size, 0);
 
-            return evaluationRepository.findAll()
-                    .page(page, size)
+            String direction = (sortDirection != null && sortDirection.equalsIgnoreCase("desc")) ? "Descending" : "Ascending";
+            String sortBy = (sortColumn != null && !sortColumn.isEmpty()) ? sortColumn : ALLOWED_SORT_COLUMNS.getFirst();
+
+            if (!ALLOWED_SORT_COLUMNS.contains(sortBy)) {
+                throw new BadRequestException("Invalid sort column: " + sortBy);
+            }
+
+            return evaluationRepository
+                    .findAll(Sort.by(sortBy, Sort.Direction.valueOf(direction)))
+                    .page(Page.of(page, size))
                     .list()
                     .stream()
                     .map(evaluationMapper::toResDto)

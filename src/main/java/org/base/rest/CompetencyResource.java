@@ -43,12 +43,14 @@ public class CompetencyResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Loggable
-    public Response getAll(
-            @QueryParam("page") int page,
-            @QueryParam("size") int size) {
+    public Response getPaginated(
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("size") @DefaultValue("10") int size,
+            @QueryParam("sortDirection") @DefaultValue("ASC") String sortDirection,
+            @QueryParam("sortColumn") @DefaultValue("competencyId") String sortColumn) {
 
         ApiResponse apiResponse = ApiResponse.builder()
-                .data(service.getPaginated(page, size))
+                .data(service.getPaginated(page, size, sortDirection, sortColumn))
                 .metadata(new PaginationMetadata(page, size, GeneralUtil.countTotalPages(service.countTotal(), size), service.countTotal()))
                 .message(messageSource.getMessage("fetch.success"))
                 .build();
