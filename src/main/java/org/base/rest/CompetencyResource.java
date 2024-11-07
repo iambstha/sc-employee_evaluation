@@ -7,16 +7,33 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.base.aop.loggable.Loggable;
+import org.base.aop.publicEndpoint.PublicEndpoint;
 import org.base.config.MessageSource;
 import org.base.domain.ApiResponse;
 import org.base.dto.CompetencyReqDto;
 import org.base.dto.PaginationMetadata;
 import org.base.service.competency.CompetencyService;
 import org.base.util.GeneralUtil;
+import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeIn;
+import org.eclipse.microprofile.openapi.annotations.enums.SecuritySchemeType;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
+import org.eclipse.microprofile.openapi.annotations.security.SecuritySchemes;
 
 @Slf4j
 @Path("/competency")
+//@SecuritySchemes(value = {
+//        @SecurityScheme(
+//                securitySchemeName = "X-TOKEN",
+//                type = SecuritySchemeType.APIKEY,
+//                scheme = "bearer",
+//                in = SecuritySchemeIn.HEADER,
+//                apiKeyName = "X-TOKEN",
+//                description = "Custom security header"
+//        )
+//})
+//@SecurityRequirement(name = "X-TOKEN")
 public class CompetencyResource {
 
     @Inject
@@ -43,6 +60,7 @@ public class CompetencyResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Loggable
+    @PublicEndpoint
     public Response getPaginated(
             @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("size") @DefaultValue("10") int size,
